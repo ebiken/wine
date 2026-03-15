@@ -1,0 +1,12 @@
+---
+description: Project-wide rules that Cursor always follows
+alwaysApply: true
+---
+
+# Project rules
+
+- Follow existing code style and patterns in this repo.
+- Prefer small, focused changes; avoid unnecessary refactors.
+- Keep new code consistent with the project’s structure and conventions.
+- When adding dependencies, use the project’s existing package manager and lockfiles.
+- **Web lookup**: You may use web search and fetch tools whenever needed to look up docs, APIs, or current information. Do not ask for permission first—proceed with the lookup.
