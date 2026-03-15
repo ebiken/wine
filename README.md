@@ -1,4 +1,4 @@
-# Wine Sandbox for ebiken (Private)
+# Wine Sandbox for ebiken
 
-- This is a private repo for anything related to wine.
-- Contents in this repo should be copied to public repo to make it publically visible.
+- This is a repo for anything related to wine.
+- Many contents are generated using AI (Cursor, Claude, etc.). There could be incorrect or missleading information.
