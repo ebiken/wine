@@ -1,0 +1,67 @@
+---
+description: "Rules for writing documentation (format, naming, language suffixes)"
+globs: "**/*.adoc, **/*.md"
+alwaysApply: false
+---
+# Documentation rules
+
+When creating or editing documentation in this project:
+
+## Format
+
+- **Use AsciiDoc (`.adoc`)** unless the project or the user explicitly specifies another format (e.g. Markdown, reStructuredText).
+- Prefer AsciiDoc for new docs when no format is mandated.
+- **Use Markdown (`.md`)** for README.md
+
+## File naming and language
+
+- **English**: use the `_en.adoc` suffix.
+  - Example: `getting-started_en.adoc`, `api-reference_en.adoc`
+- **Japanese**: use the `_ja.adoc` suffix.
+  - Example: `getting-started_ja.adoc`, `api-reference_ja.adoc`
+- For a single-language doc, still use the appropriate suffix (`_en.adoc` or `_ja.adoc`) so language is clear.
+
+## URLs and spacing
+
+- When a URL immediately follows a character that is **not** half-width alphanumeric (e.g. Japanese or other non-ASCII text, punctuation, or a space), insert a **half-width space** before the URL so links and sentence flow are clear.
+  - Avoid: `詳細はhttps://example.com/を参照。`
+  - Prefer: `詳細は https://example.com/ を参照。`
+
+## Summary
+
+| Language | Suffix     | Example           |
+|----------|------------|-------------------|
+| English  | `_en.adoc` | `index_en.adoc`   |
+| Japanese | `_ja.adoc` | `index_ja.adoc`   |
+
+## AsciiDoc formatting
+
+- Put one blank line before the first item of a list (lines starting with `* `, `. `, `** `, etc.) when it follows paragraph text or other non-list content.
+
+Example:
+```
+Some paragraph text.
+
+* First item
+* Second item
+```
+
+## Diagrams
+
+- Use PlantUML for text-based diagrams.
+- Use PNG format for image files.
+
+## Math and special characters
+
+Use plain ASCII only for math signs. Do not use Unicode math symbols.
+
+| Instead of | Use       | Example        |
+|-----------|-----------|----------------|
+| × (U+00D7) | `x` or `*` | `2x H100`, `a * b` |
+| − (U+2212) | `-`       | `80 - 14`      |
+| – (U+2013) | `-`       | `latency - 10` |
+| ≈ (U+2248) | `~=`      | `latency ~= 100ms` |
+| ▼         | `v`       | ASCII art arrows |
+| √x (U+221A) | `sqrt(x)` | `sqrt(d_k)`   |
+
+Do not use: ▼, × (use `*` or `x`), − (use `-`), – (use `-`), ≈ (use `~=`), √ (use `sqrt(...)`).
