@@ -15,7 +15,7 @@ font:
       bold_italic: /Users/ebiken/.rbenv/versions/3.3.6/lib/ruby/gems/3.3.0/gems/asciidoctor-pdf-2.3.19/data/fonts/mplus1mn-bold_italic-subset.ttf
 base:
   font_family: M+ 1p
-  font_size: 10.5
+  font_size: 10
   line_height: 1.6
   text_align: left
   hyphenate: false
