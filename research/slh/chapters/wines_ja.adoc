@@ -1,0 +1,156 @@
+= 特定銘柄・ヴィンテージの記録
+
+ワイン毎の特徴を以下形式でまとめてメモしています。
+
+* **生産者**: ...
+* **醸造**: ...
+* **畑**:
+** **畑1**: ....
+** **畑2**: ....
+* **味わい・評価**: ...
+* **ヴィンテージ毎の特徴**:
+** 2019年 ....
+** 2022年 ....
+* **備考**:
+** ....
+** ....
+
+== Pisoni Family Vineyards / Lucia
+
+Pisoni 家が栽培・醸造。Lucia は Pisoni Estate の姉妹ブランドで Pisoni、Garys'、Soberanes など SLH の畑から少量醸造。Pisoni Vineyards / Pisoni Estate は Gary Pisoni が1982年から開墾したエステート。Jeff Pisoni が醸造、Mark Pisoni が畑管理。
+
+=== Lucia Chardonnay Soberanes Vineyard Santa Lucia Highlands
+
+* **醸造**: 手摘み・手選果、ネイティブ酵母発酵、フレンチオークで17ヶ月熟成（新樽30%）。重力式醸造施設で一貫管理
+* **畑**:
+** **Soberanes Vineyard**: Pisoni と Franscioni の共同畑。SLH ベンチに位置し、Garys' Vineyard に隣接。Wine Enthusiast で「産地を代表する格付けの畑」の一つに挙げられる。約33エーカーのシャルドネ・ピノ・ノワール・シラー。ロームと岩の土壌にカリフォルニア・ブルゴーニュ系の多様なクローンを密植
+* **味わい・評価**: 白桃・ベイクドアップル・レモン・ジンジャー、チョーク質のミネラリティ、砕いた花崗岩のニュアンス。樽由来の洋梨・レモンカード・トーストしたブリオッシュ。コーストの塩気と酸が効いたフィニッシュ
+* **ヴィンテージ毎の特徴**:
+** 2019年: 乾燥・早い年で凝縮したアロマ。近年の同銘柄（例: 2022）では95点などの高評価
+* **備考**:
+** テクシート・批評は参考文献に URL を掲載
+
+=== Pisoni Chardonnay Pisoni Vineyard Santa Lucia Highlands
+
+* **醸造**: Pisoni 畑のシャルドネをネイティブ酵母・フレンチオークで醸造。Lucia ブランドやエステート・キュヴェにも一部使用
+* **畑**:
+** **Pisoni Vineyard**: 海抜900〜1,300フィート、サリナス渓谷上段の花崗岩質の山腹。約40エーカーを超える区画で、シャルドネ・ピノ・ノワール・シラーを栽培。30以上のブロックに分けて個別管理
+* **味わい・評価**: 単一畑シャルドネとして限定的なリリース。凝縮と酸のバランスが特徴
+* **ヴィンテージ毎の特徴**:
+** 2022年: 乾燥・早いヴィンテージ。9月の熱波を避けて収穫
+* **備考**:
+** Pisoni Estate は単一ワイン「Pisoni Estate Pinot Noir」で知られるが、畑ではシャルドネも栽培。Pisoni 名義の Pisoni Vineyard 単一畑シャルドネは限定的なリリース
+
+== Flowers Vineyard & Winery
+
+ソノマ・コーストのエステート畑で知られるが、設立期からカリフォルニアの優良畑からも果実を調達。エレガントで酸と果実のバランスを重視。
+
+=== Pinot Noir Pisoni Vineyard Santa Lucia Highlands
+
+* **醸造**: 契約畑の果実を手摘み。フレンチオークで10〜11ヶ月熟成（新樽18〜20%）。アンビエント酵母発酵。Sonoma Coast 単一畑シリーズと同様の醸造方針
+* **畑**:
+** **Pisoni Vineyard**: SLH を代表するピノ・ノワール畑。Gary Pisoni が1980年代に取得し、ラ・ターシュ由来のクローンなどで植樹。花崗岩質の痩せた土壌で低収量・高凝縮
+* **味わい・評価**: シルキーなタンニン、フローラル・スパイス、ラズベリー・チェリーからドライフルーツ・ハーブまで。酸と果実のバランスが評される
+* **ヴィンテージ毎の特徴**:
+** 1998年: Pisoni の果実を多数のプレステージ生産者が使用し始めた時期のヴィンテージ。Flowers は当時から Pisoni 畑 designate を少量生産
+* **備考**:
+** 1998年は産地外で Pisoni 名が広く知られ始めた時期
+
+== Ryan
+
+Ryan（Ryan Wine Cellars等の表記あり）。Pisoni Vineyard から果実を調達して単一畑ピノ・ノワールを生産した小規模生産者。
+
+=== Pinot Noir Pisoni Vineyard Santa Lucia Highlands
+
+* **醸造**: 契約畑 Pisoni の果実を少量醸造。詳細は一次資料に依存
+* **畑**:
+** **Pisoni Vineyard**: SLH を代表するピノ・ノワール畑。花崗岩質・低収量で凝縮した果実
+* **味わい・評価**: 当時の産地・畑のスタイルを伝える銘柄。SLH および Pisoni の評価が産地外に広がった時期の代表的な購入果実醸造
+* **ヴィンテージ毎の特徴**:
+** 1999年: SLH および Pisoni の評価が産地外に広がった時期のヴィンテージ
+** 2000年: 当時の産地・畑のスタイルを伝える銘柄の一つ
+* **備考**:
+** Ryan の Pisoni designate は文献が少なく、ワイナリー詳細は追調査
+
+== Tandem
+
+Greg Bjornstad と Greg La Follette（元 Flowers 醸造責任者）が2001年に設立。少量・職人的な醸造で、優良畑から果実を調達。のちに La Follette Wines へ移行。
+
+=== Pinot Noir Pisoni Vineyard Santa Lucia Highlands
+
+* **醸造**: 契約畑の果実を小ロットで醸造。テロワールの表現を重視。100%返金保証を表明
+* **畑**:
+** **Pisoni Vineyard**: Testarossa、Patz & Hall、Siduri、Morgan、Flowers などと並ぶ Pisoni 果実の購入先の一角
+* **味わい・評価**: ラズベリー・グアバ・ラベンダーの花、レッドカラント・パッションフルーツ・パパイヤ、酸が効いた長いフィニッシュ。「succulent and smooth」、果実はやや控えめでハーブのバランス。Vinography で 9.5/10、約 $54
+* **ヴィンテージ毎の特徴**:
+** 2001年: 上記の味わい・評価。当時 Patz & Hall、Morgan、Siduri の Pisoni より本銘柄を好む評も
+* **備考**:
+** テクシート・批評は参考文献に URL を掲載（Vinography 等）
+
+== Testarossa Winery
+
+1993年 Rob & Diana Jensen 設立、ロス・ガトス拠点。自社畑を持たず、ロシアン・リバー、SLH、スタ・リタ・ヒルズなど優良畑と契約。Bill Brosseau が2003年から醸造責任者。Single Vineyard Series の一つとして Pisoni Vineyard を継続醸造。
+
+=== Pinot Noir Pisoni Vineyard Santa Lucia Highlands
+
+* **醸造**: 契約畑果実を同一方針で醸造しテロワール差を出す。フレンチオーク使用。全単一畑ピノ・ノワールで類似技法
+* **畑**:
+** **Pisoni Vineyard**: SLH の代表畑。果実の豊かさ、酸のバランス、ジューシーで柔らかいテクスチャーが特徴
+* **味わい・評価**: 近年ヴィンテージ（例: 2019）では「fleshy and rich-tasting, forest floor」、14.1%程度。果実の豊かさ、酸のバランス、ジューシーで柔らかいテクスチャー
+* **ヴィンテージ毎の特徴**:
+** 2002年: Brosseau 着任前のヴィンテージ。産地・畑の個性を示す銘柄
+* **備考**:
+** Jancis Robinson は 2004年 Pisoni を Testarossa のトップワインの一つに挙げた
+
+== Siduri
+
+1990年代半ばから SLH の複数畑をブレンドした産地名ピノ・ノワールを継続発表。Pisoni、Garys'、Sierra Mar、Soberanes、Rosella's など単一畑シリーズも展開。
+
+=== Pinot Noir Pisoni Vineyard "Eddie's Lot" Santa Lucia Highlands
+
+* **醸造**: 契約畑果実を産地・畑別に醸造。SLH は霧と海風で酸が保たれ、豊かさとソフトなタンニンが特徴とされる
+* **畑**:
+** **Pisoni Vineyard "Eddie's Lot"**: Pisoni Vineyard は複数ブロック（Mommy's、Tina、Mario Alto、Susan's Hill など）に分かれる。Eddie's Lot は Gary Pisoni の父 Eddie Pisoni（家族農場 Pisoni Farms の共同創業者）にちなむ区画
+* **味わい・評価**: 黒系果実・森の土のアロマ、豊かな口当たり、純粋な果実味とベルベットのタニン。アルコール約14.9%。8年以上の熟成適性。仔牛・豚・鶏料理とのペアリングが推奨される
+* **ヴィンテージ毎の特徴**:
+** 2008年: 上記の味わい・評価
+* **備考**:
+** 参考文献に Siduri 公式・Vivino 等の URL を掲載
+
+== 参考文献・追記
+
+* **Pisoni Family Vineyards / Lucia**
+** 公式サイト: https://www.pisonivineyards.com/
+** ワイン一覧: https://www.pisonivineyards.com/wines/
+** Lucia: https://www.pisonivineyards.com/lucia-wines/
+** テクシート（Lucia CH Soberanes 2022）: https://blog.pisonivineyards.com/tech-sheets/2022-lucia-chardonnay-soberanes-vineyard/
+** テクシート（Lucia CH Soberanes 2023）: https://blog.pisonivineyards.com/tech-sheets/2023-lucia-chardonnay-soberanes-vineyard/
+** Soberanes の歴史: https://blog.pisonivineyards.com/notes/history-of-soberanes/
+** Pisoni ブロック別栽培: https://blog.pisonivineyards.com/notes/block-by-block-farming-pisoni-vineyards/
+* **Soberanes Vineyard**
+** 公式サイト: https://www.soberanesvineyard.com/
+* **Santa Lucia Highlands AVA**
+** 産地公式: https://www.santaluciahighlands.com/
+** Soberanes Vineyard 紹介: https://www.santaluciahighlands.com/vineyard/soberanes-vineyard/
+** Pisoni Vineyard 紹介: https://www.santaluciahighlands.com/vineyard/pisoni-vineyard/
+* **Siduri**
+** 公式サイト: https://www.siduri.com/
+** Santa Lucia Highlands ワイン: https://www.siduri.com/pinot-noir-santa-lucia-highlands/
+** ワイン一覧: https://www.siduri.com/wines
+* **Testarossa Winery**
+** 公式サイト: https://www.testarossa.com/
+** About: https://www.testarossa.com/about/
+* **Flowers Vineyard & Winery**
+** 公式サイト: https://www.flowerswinery.com/
+* **批評・記事**
+** Vinography（2001 Tandem Pisoni Vineyard PN）: https://www.vinography.com/2004/05/2001_tandem_pisoni_vineyard_pi
+** Wine Spectator: https://www.winespectator.com/
+** Wine Enthusiast: https://www.winemag.com/
+** Vinous: https://www.vinous.com/
+** James Suckling: https://www.jamessuckling.com/
+** Prince of Pinot（Testarossa / Pisoni 等）: https://www.princeofpinot.com/
+* **百科事典**
+** Wikipedia「Pisoni Vineyards and Winery」: https://en.wikipedia.org/wiki/Pisoni_Vineyards_and_Winery
+** Wikipedia「Testarossa Winery」: https://en.wikipedia.org/wiki/Testarossa_Winery
+* **本報告書**
+** 「代表的なラベル・銘柄」「ワイナリー」「畑」の各章（chapters/notable-labels_ja.adoc、wineries_ja.adoc、vineyards_ja.adoc）

@@ -1,0 +1,35 @@
+= 参考文献・情報源
+
+本調査で参照した主な情報源と、今後の引用方針をまとめる。
+
+== 一次・公式情報
+
+* **TTB（Alcohol and Tobacco Tax and Trade Bureau）**: Santa Lucia Highlands AVA の認定・境界変更の公示（Federal Register）。1992年最終規則、2006年・2021年の境界修正
+** ワイン・AVA 総合: https://www.ttb.gov/regulated-commodities/beverage-alcohol/wine
+** AVA 一覧・認定日: https://www.ttb.gov/regulated-commodities/beverage-alcohol/wine/ava-establishment-dates
+** AVA 地図: https://www.ttb.gov/ava/
+** 1992年最終規則（PDF）: https://www.ttb.gov/system/files/images/pdfs/Santa_Lucia_Highlands_final_rule.pdf
+** 2021年境界修正（Federal Register PDF）: https://www.govinfo.gov/content/pkg/FR-2021-08-25/pdf/2021-18208.pdf
+* **Santa Lucia Highlands 公式サイト**: 産地概要、気候、畑一覧、ワイン情報。 https://www.santaluciahighlands.com/
+* **Monterey County Vintners and Growers Association**: 県内 AVA の概要（Monterey Wine Country）。 https://montereywines.org/ 、AVA 一覧 https://montereywines.org/about/avas/
+* **USDA / 土壌調査**: Monterey County 土壌調査（Soil Survey of Monterey County, California, 1978）— 土壌系列名・分布の参照。 Web Soil Survey: https://websoilsurvey.nrcs.usda.gov/
+
+== 二次情報・百科事典
+
+* **Wikipedia 英語版「Santa Lucia Highlands AVA」**: 認定経緯、地形・気候・土壌の要約、畑・ワイナリー数の参考。出典付き。 https://en.wikipedia.org/wiki/Santa_Lucia_Highlands_AVA
+* **Wine Enthusiast（Wine Mag）**: 「California's Grand Cru Chardonnays」等の記事（Sleepy Hollow、Double L の評価）。 https://www.winemag.com/2016/08/17/californias-grand-cru-chardonnays/
+* **Wine Spectator**: SLH ピノ・ノワールのヴィンテージ評価（2007年以降の90〜94点台の言及）。 https://www.winespectator.com/
+* **FredSwan.wine, Prince of Pinot, PalateXposure 等**: 産地・畑・生産者の解説記事
+** FredSwan.wine（SLH 解説）: https://www.fredswan.wine/2016/11/15/what-everyone-should-know-santa-lucia-highlands/
+** Prince of Pinot（SLH 畑解説）: https://www.princeofpinot.com/article/2337/
+** PalateXposure（SLH ワイナリー例）: https://www.palatexposure.com/lists/santa-lucia-highlands/
+* **Vinous, Appellation America, Plantmaps.com**: 気候・積算温度・AVA プロファイルの参考
+** Vinous: https://www.vinous.com/
+** Appellation America（Santa Lucia Highlands、アーカイブ）: https://web.archive.org/web/20181011140156/http://wine.appellationamerica.com/wine-region/Santa-Lucia-Highlands.html
+** Plantmaps.com（SLH AVA プロファイル）: https://www.plantmaps.com/en/wine-region-maps/united-states/santa-lucia-highlands
+
+== 引用・追記の方針
+
+* 数値・認定年・境界は TTB 公示または公式サイトを優先して記載した
+* 畑・ワイナリー・醸造家の記述は、公式サイト・ワイナリー公式情報および上記二次情報を参照。可能な範囲で一次情報で確認する
+* 今後の追記・修正時は、出典を明記し、本節の一覧に追加する

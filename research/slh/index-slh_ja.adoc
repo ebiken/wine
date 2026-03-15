@@ -1,0 +1,33 @@
+= Santa Lucia Highlands ワイン調査報告書
+:doctype: book
+:lang: ja
+:toc: left
+:toclevels: 3
+:chapter-label:
+
+== 序文
+
+この文書は、カリフォルニア州 Monterey County に位置する Santa Lucia Highlands（サンタ・ルシア・ハイランズ）のワイン産地について、地形・気候・畑・葡萄品種・生産者・ヴィンテージ特性などを整理し、日本語でまとめた調査報告書です。
+
+// 概説パート
+include::chapters/history_ja.adoc[leveloffset=+1]
+include::chapters/ava_ja.adoc[leveloffset=+1]
+include::chapters/terrain_ja.adoc[leveloffset=+1]
+include::chapters/climate-soil_ja.adoc[leveloffset=+1]
+
+// 畑・品種
+include::chapters/vineyards_ja.adoc[leveloffset=+1]
+include::chapters/grape-varieties_ja.adoc[leveloffset=+1]
+
+// 生産者
+include::chapters/wineries_ja.adoc[leveloffset=+1]
+include::chapters/winemakers_ja.adoc[leveloffset=+1]
+
+// 特性・銘柄
+include::chapters/vintage-variety_ja.adoc[leveloffset=+1]
+include::chapters/notable-labels_ja.adoc[leveloffset=+1]
+include::chapters/wines_ja.adoc[leveloffset=+1]
+
+// 参考文献
+include::chapters/references_ja.adoc[leveloffset=+1]
+
