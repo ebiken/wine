@@ -51,3 +51,5 @@ Use plain ASCII only for math signs. Do not use Unicode math symbols.
 | ≈ (U+2248)  | `~=`       | `latency ~= 100ms` |
 | ▼           | `v`        | ASCII art arrows   |
 | √x (U+221A) | `sqrt(x)`  | `sqrt(d_k)`        |
+
+**Exception — Japanese range notation**: `〜` (U+301C wave dash) may be used in Japanese documents to express ranges (e.g. `1980〜1990年代`, `約1〜2マイル`). This is a Japanese typographic convention, not a math symbol.

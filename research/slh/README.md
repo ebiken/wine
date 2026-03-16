@@ -20,7 +20,43 @@
 
 ## ビルド
 
-- 日本語 PDF: `make ja`（asciidoctor-pdf が必要: `gem install asciidoctor-pdf`）
-- HTML: `make html`
+### 前提
 
-詳細は BUILD.adoc を参照。
+- Asciidoctor がローカル環境にインストールされていること。
+  - Ruby 版 asciidoctor の例: `gem install asciidoctor`
+
+### Makefile を使ったビルド
+
+`research/slh` で次を実行する。
+
+| コマンド | 説明 |
+|----------|------|
+| `make ja` | 日本語 PDF を生成（`out/index-slh_ja.pdf`） |
+| `make html` | HTML を生成（`out/index-slh_ja.html`） |
+| `make <file.adoc>` | 指定した `.adoc` だけの PDF を生成（例: `make chapters/history_ja.adoc` → `out/chapters/history_ja.pdf`） |
+| `make clean` | `out/` ディレクトリを削除 |
+
+PDF には `../../pdf-theme-ja.yml` のテーマが適用される。
+
+### HTML へのビルド
+
+`research/slh` で次を実行する。
+
+```shell
+cd research/slh
+asciidoctor -b html5 -D out index-slh_ja.adoc
+```
+
+- `out/index-slh_ja.html` が生成される。
+
+### PDF へのビルド（任意）
+
+asciidoctor-pdf を利用する場合の例。
+
+```shell
+gem install asciidoctor-pdf
+cd research/slh
+asciidoctor-pdf -D out index-slh_ja.adoc
+```
+
+- `out/index-slh_ja.pdf` が生成される。

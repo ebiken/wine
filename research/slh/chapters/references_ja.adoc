@@ -11,22 +11,57 @@
 ** 1992年最終規則（PDF）: https://www.ttb.gov/system/files/images/pdfs/Santa_Lucia_Highlands_final_rule.pdf
 ** 2021年境界修正（Federal Register PDF）: https://www.govinfo.gov/content/pkg/FR-2021-08-25/pdf/2021-18208.pdf
 * **Santa Lucia Highlands 公式サイト**: 産地概要、気候、畑一覧、ワイン情報。 https://www.santaluciahighlands.com/
+** Pisoni Vineyard 畑情報（面積・品種内訳: PN 32/CH 4/Syrah 3 = 計39エーカー）: https://www.santaluciahighlands.com/vineyard/pisoni-vineyard/
+** Soberanes Vineyard 畑情報: https://www.santaluciahighlands.com/vineyard/soberanes-vineyard/
+* **Pisoni Vineyards 公式サイト**: ワイン一覧・畑情報。 https://www.pisonivineyards.com/
+** Lucia ワイン一覧: https://www.pisonivineyards.com/lucia-wines/
+** 全ワイン一覧: https://www.pisonivineyards.com/wines/
+* **Pisoni Vineyards 公式ブログ**: 畑・醸造ノート。 https://blog.pisonivineyards.com/
+** ブロック別栽培（面積 40エーカーの記述）: https://blog.pisonivineyards.com/notes/block-by-block-farming-pisoni-vineyards/
+** Soberanes の歴史: https://blog.pisonivineyards.com/notes/history-of-soberanes/
+** テクシート Lucia CH Soberanes 2022: https://blog.pisonivineyards.com/tech-sheets/2022-lucia-chardonnay-soberanes-vineyard/
+** テクシート Lucia CH Soberanes 2023: https://blog.pisonivineyards.com/tech-sheets/2023-lucia-chardonnay-soberanes-vineyard/
+* **Soberanes Vineyard 公式サイト**: 畑概要。 https://www.soberanesvineyard.com/
+* **Siduri（Jackson Family Wines）公式サイト**: ワイン情報。 https://www.siduri.com/
+** Santa Lucia Highlands ワイン: https://www.siduri.com/pinot-noir-santa-lucia-highlands/
+** ワイン一覧: https://www.siduri.com/wines
+* **Testarossa Winery 公式サイト**: ロス・ガトス拠点、単一畑シリーズ。 https://www.testarossa.com/
+** About: https://www.testarossa.com/about/
+* **Flowers Vineyard & Winery 公式サイト**: https://www.flowerswinery.com/
 * **Monterey County Vintners and Growers Association**: 県内 AVA の概要（Monterey Wine Country）。 https://montereywines.org/ 、AVA 一覧 https://montereywines.org/about/avas/
 * **USDA / 土壌調査**: Monterey County 土壌調査（Soil Survey of Monterey County, California, 1978）— 土壌系列名・分布の参照。 Web Soil Survey: https://websoilsurvey.nrcs.usda.gov/
 
 == 二次情報・百科事典
 
-* **Wikipedia 英語版「Santa Lucia Highlands AVA」**: 認定経緯、地形・気候・土壌の要約、畑・ワイナリー数の参考。出典付き。 https://en.wikipedia.org/wiki/Santa_Lucia_Highlands_AVA
+* **Wikipedia 英語版**: 産地・生産者・畑の参考。
+** 「Santa Lucia Highlands AVA」: 認定経緯、地形・気候・土壌の要約、畑・ワイナリー数の参考。出典付き。 https://en.wikipedia.org/wiki/Santa_Lucia_Highlands_AVA
+** 「Pisoni Vineyards and Winery」: https://en.wikipedia.org/wiki/Pisoni_Vineyards_and_Winery
+** 「Testarossa Winery」: https://en.wikipedia.org/wiki/Testarossa_Winery
 * **Wine Enthusiast（Wine Mag）**: 「California's Grand Cru Chardonnays」等の記事（Sleepy Hollow、Double L の評価）。 https://www.winemag.com/2016/08/17/californias-grand-cru-chardonnays/
 * **Wine Spectator**: SLH ピノ・ノワールのヴィンテージ評価（2007年以降の90〜94点台の言及）。 https://www.winespectator.com/
 * **FredSwan.wine, Prince of Pinot, PalateXposure 等**: 産地・畑・生産者の解説記事
 ** FredSwan.wine（SLH 解説）: https://www.fredswan.wine/2016/11/15/what-everyone-should-know-santa-lucia-highlands/
 ** Prince of Pinot（SLH 畑解説）: https://www.princeofpinot.com/article/2337/
 ** PalateXposure（SLH ワイナリー例）: https://www.palatexposure.com/lists/santa-lucia-highlands/
+* **Vinography**: ワインブログ（単一畑ピノ・ノワールのレビュー等）。
+** 2001 Tandem Pisoni Vineyard PN レビュー: https://www.vinography.com/2004/05/2001_tandem_pisoni_vineyard_pi
+* **James Suckling**: ワイン評価サイト。 https://www.jamessuckling.com/
 * **Vinous, Appellation America, Plantmaps.com**: 気候・積算温度・AVA プロファイルの参考
 ** Vinous: https://www.vinous.com/
 ** Appellation America（Santa Lucia Highlands、アーカイブ）: https://web.archive.org/web/20181011140156/http://wine.appellationamerica.com/wine-region/Santa-Lucia-Highlands.html
 ** Plantmaps.com（SLH AVA プロファイル）: https://www.plantmaps.com/en/wine-region-maps/united-states/santa-lucia-highlands
+
+== 略語一覧
+
+ATF:: Bureau of Alcohol, Tobacco and Firearms（アルコール・タバコ・火器局）。TTB の前身機関。AVA 認定を所管していた
+AVA:: American Viticultural Area（アメリカン・ヴィティカルチュラル・エリア）。TTB が認定する米国のブドウ産地呼称制度
+CH:: Chardonnay（シャルドネ）。品種内訳の略記に使用
+GDD:: Growing Degree Days（グローイング・ディグリー・デイズ、積算温度）。生育期間中の日平均気温から基準温度（50°F / 10°C）を引いた値の累計。ウィンクラー指数の算出基礎
+PN:: Pinot Noir（ピノ・ノワール）。品種内訳の略記に使用
+Region I〜II:: ウィンクラー指数による気候区分。GDD で Region I（< 2,500）・Region II（2,501〜3,000）が冷涼産地に相当。SLH は概ね Region I〜II に区分される
+SLH:: Santa Lucia Highlands（サンタ・ルシア・ハイランズ）。本報告書で使用する産地の略称
+TTB:: Alcohol and Tobacco Tax and Trade Bureau（アルコール・タバコ・税務貿易局）。財務省傘下。AVA の認定・管理を所管する現行機関
+USDA:: United States Department of Agriculture（米国農務省）。土壌調査（Web Soil Survey）を管轄
 
 == 引用・追記の方針
 
