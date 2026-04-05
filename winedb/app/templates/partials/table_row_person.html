@@ -1,0 +1,16 @@
+<tr id="person-row-{{ item.id }}">
+  <td>{{ item.first_name }} {{ item.last_name }}</td>
+  <td>{{ item.birth_year or "—" }}</td>
+  <td>{{ item.nationality or "—" }}</td>
+  <td>
+    <button class="btn btn-sm btn-outline-secondary"
+            hx-get="/ui/persons/modal/{{ item.id }}"
+            hx-target="#modal-container"
+            hx-swap="innerHTML">Edit</button>
+    <button class="btn btn-sm btn-outline-danger"
+            hx-delete="/ui/persons/{{ item.id }}"
+            hx-target="#person-row-{{ item.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="Delete '{{ item.first_name }} {{ item.last_name }}'?">Del</button>
+  </td>
+</tr>

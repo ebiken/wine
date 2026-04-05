@@ -1,0 +1,19 @@
+<div class="vineyard-source-row d-flex gap-2 mb-2 align-items-center">
+  <select name="vineyard_id" class="form-select form-select-sm flex-grow-1">
+    <option value="">— select vineyard —</option>
+    {% for v in vineyards %}
+    <option value="{{ v.id }}"
+            {% if source and source.vineyard_id == v.id %}selected{% endif %}>
+      {{ v.name }}
+    </option>
+    {% endfor %}
+  </select>
+  <input name="block_name" class="form-control form-control-sm" style="width:120px"
+         placeholder="Block" value="{{ source.block_name if source else '' }}">
+  <input name="pct_blend" type="number" step="0.1" min="0" max="100"
+         class="form-control form-control-sm" style="width:80px"
+         placeholder="%" value="{{ source.pct_blend if source else '' }}">
+  <button type="button"
+          onclick="this.closest('.vineyard-source-row').remove()"
+          class="btn btn-sm btn-outline-danger flex-shrink-0">×</button>
+</div>

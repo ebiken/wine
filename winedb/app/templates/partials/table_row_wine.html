@@ -1,0 +1,34 @@
+<tr id="wine-row-{{ item.id }}">
+  <td>{{ item.label_name }}</td>
+  <td>{{ item.vintage_year }}</td>
+  <td>
+    {% for w in wineries %}{% if w.id == item.winery_id %}{{ w.name }}{% endif %}{% endfor %}
+  </td>
+  <td>
+    {% if item.ava_id %}
+      {% for a in all_avas %}{% if a.id == item.ava_id %}{{ a.name }}{% endif %}{% endfor %}
+    {% else %}—{% endif %}
+  </td>
+  <td>
+    {% if item.grape_variety_id %}
+      {% for g in grape_varieties %}{% if g.id == item.grape_variety_id %}{{ g.name }}{% endif %}{% endfor %}
+    {% else %}—{% endif %}
+  </td>
+  <td>{{ item.alcohol_pct ~ "%" if item.alcohol_pct else "—" }}</td>
+  <td>
+    {% if item.vineyard_sources %}
+      <span class="badge bg-secondary">{{ item.vineyard_sources | length }}</span>
+    {% else %}—{% endif %}
+  </td>
+  <td>
+    <button class="btn btn-sm btn-outline-secondary"
+            hx-get="/ui/wines/modal/{{ item.id }}"
+            hx-target="#modal-container"
+            hx-swap="innerHTML">Edit</button>
+    <button class="btn btn-sm btn-outline-danger"
+            hx-delete="/ui/wines/{{ item.id }}"
+            hx-target="#wine-row-{{ item.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="Delete '{{ item.label_name }} {{ item.vintage_year }}'?">Del</button>
+  </td>
+</tr>

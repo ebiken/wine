@@ -1,0 +1,32 @@
+[project]
+name = "winedb"
+version = "0.1.0"
+description = "Wine database application for managing US wine information"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.115",
+    "sqlalchemy[asyncio]>=2.0",
+    "alembic>=1.13",
+    "pydantic-settings>=2.0",
+    "typer>=0.12",
+    "asyncpg>=0.29",
+    "aiosqlite>=0.20",
+]
+
+[project.scripts]
+winedb = "app.cli.main:app"
+
+[tool.uv]
+package = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.27",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+]

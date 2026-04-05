@@ -1,0 +1,22 @@
+<tr id="ava-row-{{ item.id }}">
+  <td>{{ item.name }}{% if item.short_name %} <small class="text-muted">({{ item.short_name }})</small>{% endif %}</td>
+  <td>{{ item.state or "—" }}</td>
+  <td>{{ item.county or "—" }}</td>
+  <td>
+    {% if item.parent_ava_id %}
+      {% for a in all_avas %}{% if a.id == item.parent_ava_id %}{{ a.name }}{% endif %}{% endfor %}
+    {% else %}—{% endif %}
+  </td>
+  <td>{{ item.total_acres or "—" }}</td>
+  <td>
+    <button class="btn btn-sm btn-outline-secondary"
+            hx-get="/ui/ava/modal/{{ item.id }}"
+            hx-target="#modal-container"
+            hx-swap="innerHTML">Edit</button>
+    <button class="btn btn-sm btn-outline-danger"
+            hx-delete="/ui/ava/{{ item.id }}"
+            hx-target="#ava-row-{{ item.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="Delete '{{ item.name }}'?">Del</button>
+  </td>
+</tr>

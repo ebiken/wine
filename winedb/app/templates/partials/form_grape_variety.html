@@ -1,0 +1,59 @@
+<div class="modal fade show d-block" tabindex="-1" id="entity-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ "Edit" if item else "New" }} Grape Variety</h5>
+        <button type="button" class="btn-close"
+                onclick="document.getElementById('modal-container').innerHTML=''"></button>
+      </div>
+      <div class="modal-body">
+        {% if errors.__all__ is defined %}
+        <div class="alert alert-danger py-2">{{ errors.__all__ }}</div>
+        {% endif %}
+        <form id="gv-form"
+              {% if item %}
+              hx-post="/ui/grape-varieties/{{ item.id }}/edit"
+              hx-target="#gv-row-{{ item.id }}"
+              hx-swap="outerHTML"
+              {% else %}
+              hx-post="/ui/grape-varieties"
+              hx-target="#gv-tbody"
+              hx-swap="afterbegin"
+              {% endif %}
+              hx-on::after-request="if(event.detail.successful) document.getElementById('modal-container').innerHTML=''">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
+            <input name="name" class="form-control {% if errors.name is defined %}is-invalid{% endif %}"
+                   value="{{ item.name if item else '' }}" required>
+            {% if errors.name is defined %}<div class="invalid-feedback">{{ errors.name }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Color</label>
+            <select name="color" class="form-select">
+              <option value="">— select —</option>
+              <option value="red" {% if item and item.color == 'red' %}selected{% endif %}>Red</option>
+              <option value="white" {% if item and item.color == 'white' %}selected{% endif %}>White</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Origin Region</label>
+            <input name="origin_region" class="form-control"
+                   value="{{ item.origin_region if item else '' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Synonyms</label>
+            <input name="name_synonyms" class="form-control"
+                   value="{{ item.name_synonyms if item else '' }}"
+                   placeholder="e.g. Shiraz, Syrah">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+                onclick="document.getElementById('modal-container').innerHTML=''">Cancel</button>
+        <button type="submit" form="gv-form" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>

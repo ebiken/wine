@@ -1,0 +1,17 @@
+<tr id="gv-row-{{ item.id }}">
+  <td>{{ item.name }}</td>
+  <td>{{ item.color or "—" }}</td>
+  <td>{{ item.origin_region or "—" }}</td>
+  <td>{{ item.name_synonyms or "—" }}</td>
+  <td>
+    <button class="btn btn-sm btn-outline-secondary"
+            hx-get="/ui/grape-varieties/modal/{{ item.id }}"
+            hx-target="#modal-container"
+            hx-swap="innerHTML">Edit</button>
+    <button class="btn btn-sm btn-outline-danger"
+            hx-delete="/ui/grape-varieties/{{ item.id }}"
+            hx-target="#gv-row-{{ item.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="Delete '{{ item.name }}'?">Del</button>
+  </td>
+</tr>

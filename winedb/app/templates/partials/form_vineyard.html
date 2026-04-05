@@ -1,0 +1,94 @@
+<div class="modal fade show d-block" tabindex="-1" id="entity-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ "Edit" if item else "New" }} Vineyard</h5>
+        <button type="button" class="btn-close"
+                onclick="document.getElementById('modal-container').innerHTML=''"></button>
+      </div>
+      <div class="modal-body">
+        {% if errors.__all__ is defined %}
+        <div class="alert alert-danger py-2">{{ errors.__all__ }}</div>
+        {% endif %}
+        <form id="vineyard-form"
+              {% if item %}
+              hx-post="/ui/vineyards/{{ item.id }}/edit"
+              hx-target="#vineyard-row-{{ item.id }}"
+              hx-swap="outerHTML"
+              {% else %}
+              hx-post="/ui/vineyards"
+              hx-target="#vineyard-tbody"
+              hx-swap="afterbegin"
+              {% endif %}
+              hx-on::after-request="if(event.detail.successful) document.getElementById('modal-container').innerHTML=''">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
+              <input name="name" class="form-control {% if errors.name is defined %}is-invalid{% endif %}"
+                     value="{{ item.name if item else '' }}" required>
+              {% if errors.name is defined %}<div class="invalid-feedback">{{ errors.name }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Est. Year</label>
+              <input name="established_year" type="number" class="form-control"
+                     value="{{ item.established_year if item else '' }}">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">AVA <span class="text-danger">*</span></label>
+              <select name="ava_id" class="form-select {% if errors.ava_id is defined %}is-invalid{% endif %}" required>
+                <option value="">— select AVA —</option>
+                {% for a in all_avas %}
+                <option value="{{ a.id }}"
+                        {% if item and item.ava_id == a.id %}selected{% endif %}>
+                  {{ a.name }}
+                </option>
+                {% endfor %}
+              </select>
+              {% if errors.ava_id is defined %}<div class="invalid-feedback">{{ errors.ava_id }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Latitude</label>
+              <input name="latitude" type="number" step="0.0001" class="form-control"
+                     value="{{ item.latitude if item else '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Longitude</label>
+              <input name="longitude" type="number" step="0.0001" class="form-control"
+                     value="{{ item.longitude if item else '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Total Acres</label>
+              <input name="total_acres" type="number" class="form-control"
+                     value="{{ item.total_acres if item else '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Elev. Low (ft)</label>
+              <input name="elevation_ft_low" type="number" class="form-control"
+                     value="{{ item.elevation_ft_low if item else '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Elev. High (ft)</label>
+              <input name="elevation_ft_high" type="number" class="form-control"
+                     value="{{ item.elevation_ft_high if item else '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Soil Type</label>
+              <input name="soil_type" class="form-control"
+                     value="{{ item.soil_type if item else '' }}">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea name="description" class="form-control" rows="3">{{ item.description if item else '' }}</textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+                onclick="document.getElementById('modal-container').innerHTML=''">Cancel</button>
+        <button type="submit" form="vineyard-form" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>

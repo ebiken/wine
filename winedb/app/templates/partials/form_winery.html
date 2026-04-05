@@ -1,0 +1,85 @@
+<div class="modal fade show d-block" tabindex="-1" id="entity-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ "Edit" if item else "New" }} Winery</h5>
+        <button type="button" class="btn-close"
+                onclick="document.getElementById('modal-container').innerHTML=''"></button>
+      </div>
+      <div class="modal-body">
+        {% if errors.__all__ is defined %}
+        <div class="alert alert-danger py-2">{{ errors.__all__ }}</div>
+        {% endif %}
+        <form id="winery-form"
+              {% if item %}
+              hx-post="/ui/wineries/{{ item.id }}/edit"
+              hx-target="#winery-row-{{ item.id }}"
+              hx-swap="outerHTML"
+              {% else %}
+              hx-post="/ui/wineries"
+              hx-target="#winery-tbody"
+              hx-swap="afterbegin"
+              {% endif %}
+              hx-on::after-request="if(event.detail.successful) document.getElementById('modal-container').innerHTML=''">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
+              <input name="name" class="form-control {% if errors.name is defined %}is-invalid{% endif %}"
+                     value="{{ item.name if item else '' }}" required>
+              {% if errors.name is defined %}<div class="invalid-feedback">{{ errors.name }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Est. Year</label>
+              <input name="established_year" type="number" class="form-control"
+                     value="{{ item.established_year if item else '' }}">
+            </div>
+            <div class="col-md-5">
+              <label class="form-label fw-semibold">City</label>
+              <input name="location_city" class="form-control"
+                     value="{{ item.location_city if item else '' }}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">State</label>
+              <input name="location_state" class="form-control"
+                     value="{{ item.location_state if item else '' }}" placeholder="e.g. CA">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Negociant</label>
+              <select name="is_negociant" class="form-select">
+                <option value="" {% if not item or not item.is_negociant %}selected{% endif %}>No</option>
+                <option value="true" {% if item and item.is_negociant %}selected{% endif %}>Yes</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">AVA</label>
+              <select name="ava_id" class="form-select">
+                <option value="">— none —</option>
+                {% for a in all_avas %}
+                <option value="{{ a.id }}"
+                        {% if item and item.ava_id == a.id %}selected{% endif %}>
+                  {{ a.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Website</label>
+              <input name="website" type="url" class="form-control"
+                     value="{{ item.website if item else '' }}" placeholder="https://...">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea name="description" class="form-control" rows="3">{{ item.description if item else '' }}</textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+                onclick="document.getElementById('modal-container').innerHTML=''">Cancel</button>
+        <button type="submit" form="winery-form" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>

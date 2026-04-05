@@ -1,6 +1,10 @@
 # output files
 research/slh/out/
 
+# WineDB
+winedb.db
+winedb/data/seed/*.yaml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

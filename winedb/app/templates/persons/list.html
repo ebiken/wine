@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Persons{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Persons</h2>
+  <button class="btn btn-primary btn-sm"
+          hx-get="/ui/persons/modal/new"
+          hx-target="#modal-container"
+          hx-swap="innerHTML">+ New</button>
+</div>
+
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Birth Year</th>
+      <th>Nationality</th>
+      <th style="width:130px"></th>
+    </tr>
+  </thead>
+  <tbody id="person-tbody">
+    {% for item in items %}
+      {% include "partials/table_row_person.html" %}
+    {% endfor %}
+  </tbody>
+</table>
+{% if not items %}
+<p class="text-muted">No persons found.</p>
+{% endif %}
+{% endblock %}

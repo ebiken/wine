@@ -1,0 +1,31 @@
+<tr id="winery-row-{{ item.id }}">
+  <td>
+    {{ item.name }}
+    {% if item.website %}<a href="{{ item.website }}" target="_blank" class="ms-1 text-muted small">↗</a>{% endif %}
+  </td>
+  <td>
+    {% if item.location_city and item.location_state %}
+      {{ item.location_city }}, {{ item.location_state }}
+    {% elif item.location_state %}
+      {{ item.location_state }}
+    {% else %}—{% endif %}
+  </td>
+  <td>
+    {% if item.ava_id %}
+      {% for a in all_avas %}{% if a.id == item.ava_id %}{{ a.name }}{% endif %}{% endfor %}
+    {% else %}—{% endif %}
+  </td>
+  <td>{{ item.established_year or "—" }}</td>
+  <td>{{ "Yes" if item.is_negociant else "No" }}</td>
+  <td>
+    <button class="btn btn-sm btn-outline-secondary"
+            hx-get="/ui/wineries/modal/{{ item.id }}"
+            hx-target="#modal-container"
+            hx-swap="innerHTML">Edit</button>
+    <button class="btn btn-sm btn-outline-danger"
+            hx-delete="/ui/wineries/{{ item.id }}"
+            hx-target="#winery-row-{{ item.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="Delete '{{ item.name }}'?">Del</button>
+  </td>
+</tr>

@@ -1,0 +1,91 @@
+<div class="modal fade show d-block" tabindex="-1" id="entity-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ "Edit" if item else "New" }} AVA</h5>
+        <button type="button" class="btn-close"
+                onclick="document.getElementById('modal-container').innerHTML=''"></button>
+      </div>
+      <div class="modal-body">
+        {% if errors.__all__ is defined %}
+        <div class="alert alert-danger py-2">{{ errors.__all__ }}</div>
+        {% endif %}
+        <form id="ava-form"
+              {% if item %}
+              hx-post="/ui/ava/{{ item.id }}/edit"
+              hx-target="#ava-row-{{ item.id }}"
+              hx-swap="outerHTML"
+              {% else %}
+              hx-post="/ui/ava"
+              hx-target="#ava-tbody"
+              hx-swap="afterbegin"
+              {% endif %}
+              hx-on::after-request="if(event.detail.successful) document.getElementById('modal-container').innerHTML=''">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
+              <input name="name" class="form-control {% if errors.name is defined %}is-invalid{% endif %}"
+                     value="{{ item.name if item else '' }}" required>
+              {% if errors.name is defined %}<div class="invalid-feedback">{{ errors.name }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Short Name</label>
+              <input name="short_name" class="form-control"
+                     value="{{ item.short_name if item else '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">State <span class="text-danger">*</span></label>
+              <input name="state" class="form-control {% if errors.state is defined %}is-invalid{% endif %}"
+                     value="{{ item.state if item else '' }}" placeholder="e.g. CA" required>
+              {% if errors.state is defined %}<div class="invalid-feedback">{{ errors.state }}</div>{% endif %}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">County</label>
+              <input name="county" class="form-control"
+                     value="{{ item.county if item else '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">TTB Approval Date</label>
+              <input name="ttb_approval_date" type="date" class="form-control"
+                     value="{{ item.ttb_approval_date if item else '' }}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Parent AVA</label>
+              <select name="parent_ava_id" class="form-select">
+                <option value="">— none —</option>
+                {% for a in all_avas %}
+                  {% if not item or a.id != item.id %}
+                  <option value="{{ a.id }}"
+                          {% if item and item.parent_ava_id == a.id %}selected{% endif %}>
+                    {{ a.name }}
+                  </option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Total Acres</label>
+              <input name="total_acres" type="number" class="form-control"
+                     value="{{ item.total_acres if item else '' }}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Planted Acres</label>
+              <input name="planted_acres" type="number" class="form-control"
+                     value="{{ item.planted_acres if item else '' }}">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea name="description" class="form-control" rows="3">{{ item.description if item else '' }}</textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+                onclick="document.getElementById('modal-container').innerHTML=''">Cancel</button>
+        <button type="submit" form="ava-form" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>

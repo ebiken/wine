@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}AVAs{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">American Viticultural Areas</h2>
+  <button class="btn btn-primary btn-sm"
+          hx-get="/ui/ava/modal/new"
+          hx-target="#modal-container"
+          hx-swap="innerHTML">+ New</button>
+</div>
+
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>State</th>
+      <th>County</th>
+      <th>Parent AVA</th>
+      <th>Total Acres</th>
+      <th style="width:130px"></th>
+    </tr>
+  </thead>
+  <tbody id="ava-tbody">
+    {% for item in items %}
+      {% include "partials/table_row_ava.html" %}
+    {% endfor %}
+  </tbody>
+</table>
+{% if not items %}
+<p class="text-muted">No AVAs found.</p>
+{% endif %}
+{% endblock %}

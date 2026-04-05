@@ -1,0 +1,129 @@
+<div class="modal fade show d-block" tabindex="-1" id="entity-modal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ "Edit" if item else "New" }} Wine</h5>
+        <button type="button" class="btn-close"
+                onclick="document.getElementById('modal-container').innerHTML=''"></button>
+      </div>
+      <div class="modal-body">
+        {% if errors.__all__ is defined %}
+        <div class="alert alert-danger py-2">{{ errors.__all__ }}</div>
+        {% endif %}
+        <form id="wine-form"
+              {% if item %}
+              hx-post="/ui/wines/{{ item.id }}/edit"
+              hx-target="#wine-row-{{ item.id }}"
+              hx-swap="outerHTML"
+              {% else %}
+              hx-post="/ui/wines"
+              hx-target="#wine-tbody"
+              hx-swap="afterbegin"
+              {% endif %}
+              hx-on::after-request="if(event.detail.successful) document.getElementById('modal-container').innerHTML=''">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Winery <span class="text-danger">*</span></label>
+              <select name="winery_id" class="form-select {% if errors.winery_id is defined %}is-invalid{% endif %}" required>
+                <option value="">— select winery —</option>
+                {% for w in wineries %}
+                <option value="{{ w.id }}"
+                        {% if item and item.winery_id == w.id %}selected{% endif %}>
+                  {{ w.name }}
+                </option>
+                {% endfor %}
+              </select>
+              {% if errors.winery_id is defined %}<div class="invalid-feedback">{{ errors.winery_id }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Label Name <span class="text-danger">*</span></label>
+              <input name="label_name" class="form-control {% if errors.label_name is defined %}is-invalid{% endif %}"
+                     value="{{ item.label_name if item else '' }}" required>
+              {% if errors.label_name is defined %}<div class="invalid-feedback">{{ errors.label_name }}</div>{% endif %}
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Vintage Year <span class="text-danger">*</span></label>
+              <input name="vintage_year" type="number" class="form-control {% if errors.vintage_year is defined %}is-invalid{% endif %}"
+                     value="{{ item.vintage_year if item else '' }}" min="1800" max="2100" required>
+              {% if errors.vintage_year is defined %}<div class="invalid-feedback">{{ errors.vintage_year }}</div>{% endif %}
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Alcohol %</label>
+              <input name="alcohol_pct" type="number" step="0.1" class="form-control"
+                     value="{{ item.alcohol_pct if item else '' }}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Production Cases</label>
+              <input name="production_cases" type="number" class="form-control"
+                     value="{{ item.production_cases if item else '' }}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Release Date</label>
+              <input name="release_date" type="date" class="form-control"
+                     value="{{ item.release_date if item else '' }}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Primary Grape Variety</label>
+              <select name="grape_variety_id" class="form-select">
+                <option value="">— none —</option>
+                {% for g in grape_varieties %}
+                <option value="{{ g.id }}"
+                        {% if item and item.grape_variety_id == g.id %}selected{% endif %}>
+                  {{ g.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">AVA (label)</label>
+              <select name="ava_id" class="form-select">
+                <option value="">— none —</option>
+                {% for a in all_avas %}
+                <option value="{{ a.id }}"
+                        {% if item and item.ava_id == a.id %}selected{% endif %}>
+                  {{ a.name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Tasting Notes</label>
+              <textarea name="tasting_notes" class="form-control" rows="2">{{ item.tasting_notes if item else '' }}</textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Winery Description</label>
+              <textarea name="winery_description" class="form-control" rows="2">{{ item.winery_description if item else '' }}</textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea name="description" class="form-control" rows="2">{{ item.description if item else '' }}</textarea>
+            </div>
+
+            <!-- Vineyard Sources -->
+            <div class="col-12">
+              <label class="form-label fw-semibold">Vineyard Sources</label>
+              <div id="vineyard-sources">
+                {% if item and item.vineyard_sources %}
+                  {% for source in item.vineyard_sources %}
+                    {% include "partials/vineyard_source_row.html" %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <button type="button"
+                      hx-get="/ui/wines/vineyard-source-row"
+                      hx-target="#vineyard-sources"
+                      hx-swap="beforeend"
+                      class="btn btn-sm btn-outline-secondary mt-1">+ Add Vineyard Source</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+                onclick="document.getElementById('modal-container').innerHTML=''">Cancel</button>
+        <button type="submit" form="wine-form" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>
