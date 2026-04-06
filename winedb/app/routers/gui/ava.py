@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import HTMLResponse
 from pydantic import ValidationError
@@ -12,12 +14,61 @@ from app.schemas.ava import AVACreate, AVAUpdate
 router = APIRouter(prefix="/ui/ava", tags=["UI - AVA"])
 
 
+@router.get("/graph", response_class=HTMLResponse)
+async def graph_page(request: Request, db: AsyncSession = Depends(get_db)):
+    all_avas = await crud.get_avas(db, limit=500)
+    roots_by_state: dict[str, list] = defaultdict(list)
+    children_by_parent: dict[int, list] = defaultdict(list)
+    for ava in all_avas:
+        if ava.parent_ava_id is None:
+            roots_by_state[ava.state].append(ava)
+        else:
+            children_by_parent[ava.parent_ava_id].append(ava)
+    sorted_states = sorted(roots_by_state.keys())
+    return templates.TemplateResponse(
+        request, "ava/graph.html",
+        {"roots_by_state": dict(roots_by_state),
+         "children_by_parent": dict(children_by_parent),
+         "sorted_states": sorted_states},
+    )
+
+
 @router.get("", response_class=HTMLResponse)
 async def list_page(request: Request, db: AsyncSession = Depends(get_db)):
-    items = await crud.get_avas(db, limit=500)
+    sort_by, sort_dir = "name", "asc"
+    items = await crud.get_avas(db, sort_by=sort_by, sort_dir=sort_dir, limit=500)
     all_avas = items  # reuse for parent select
     return templates.TemplateResponse(
-        request, "ava/list.html", {"items": items, "all_avas": all_avas}
+        request, "ava/list.html",
+        {"items": items, "all_avas": all_avas, "sort_by": sort_by, "sort_dir": sort_dir},
+    )
+
+
+@router.get("/rows", response_class=HTMLResponse)
+async def list_rows(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    name: str = "",
+    state: str = "",
+    county: str = "",
+    parent_ava_id: str = "",
+    sort_by: str = "name",
+    sort_dir: str = "asc",
+):
+    all_avas = await crud.get_avas(db, limit=500)
+    items = await crud.get_avas(
+        db,
+        name=name or None,
+        state=state or None,
+        county=county or None,
+        parent_ava_id=int(parent_ava_id) if parent_ava_id else None,
+        sort_by=sort_by,
+        sort_dir=sort_dir,
+        limit=500,
+    )
+    return templates.TemplateResponse(
+        request, "ava/_table.html",
+        {"items": items, "all_avas": all_avas, "sort_by": sort_by, "sort_dir": sort_dir},
     )
 
 

@@ -9,22 +9,32 @@
           hx-swap="innerHTML">+ New</button>
 </div>
 
-<table class="table table-hover table-sm align-middle">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Birth Year</th>
-      <th>Nationality</th>
-      <th style="width:130px"></th>
-    </tr>
-  </thead>
-  <tbody id="person-tbody">
-    {% for item in items %}
-      {% include "partials/table_row_person.html" %}
-    {% endfor %}
-  </tbody>
-</table>
-{% if not items %}
-<p class="text-muted">No persons found.</p>
-{% endif %}
+<form id="person-filter-form"
+      hx-get="/ui/persons/rows"
+      hx-target="#person-table-wrap"
+      hx-trigger="input delay:300ms"
+      class="row g-2 mb-3 align-items-end">
+  <input type="hidden" id="person-sort-by"  name="sort_by"  value="{{ sort_by }}">
+  <input type="hidden" id="person-sort-dir" name="sort_dir" value="{{ sort_dir }}">
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Name</label>
+    <input type="text" name="search" class="form-control form-control-sm" placeholder="Search…" style="min-width:160px">
+  </div>
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Birth Year</label>
+    <input type="number" name="birth_year" class="form-control form-control-sm" placeholder="e.g. 1960" style="width:100px">
+  </div>
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Nationality</label>
+    <input type="text" name="nationality" class="form-control form-control-sm" placeholder="Search…" style="min-width:120px">
+  </div>
+  <div class="col-auto">
+    <button type="button" class="btn btn-outline-secondary btn-sm"
+            onclick="this.form.reset(); htmx.trigger(this.form, 'input');">Clear</button>
+  </div>
+</form>
+
+<div id="person-table-wrap">
+  {% include "persons/_table.html" %}
+</div>
 {% endblock %}

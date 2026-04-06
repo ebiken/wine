@@ -1,0 +1,6 @@
+{% for item in items %}
+  {% include "partials/table_row_winery.html" %}
+{% endfor %}
+{% if not items %}
+<tr><td colspan="6" class="text-muted fst-italic ps-2">No wineries found.</td></tr>
+{% endif %}

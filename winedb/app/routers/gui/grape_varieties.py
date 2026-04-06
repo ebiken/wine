@@ -14,9 +14,36 @@ router = APIRouter(prefix="/ui/grape-varieties", tags=["UI - Grape Varieties"])
 
 @router.get("", response_class=HTMLResponse)
 async def list_page(request: Request, db: AsyncSession = Depends(get_db)):
-    items = await crud.get_grape_varieties(db, limit=500)
+    sort_by, sort_dir = "name", "asc"
+    items = await crud.get_grape_varieties(db, sort_by=sort_by, sort_dir=sort_dir, limit=500)
     return templates.TemplateResponse(
-        request, "grape_varieties/list.html", {"items": items}
+        request, "grape_varieties/list.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir},
+    )
+
+
+@router.get("/rows", response_class=HTMLResponse)
+async def list_rows(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    name: str = "",
+    color: str = "",
+    origin_region: str = "",
+    sort_by: str = "name",
+    sort_dir: str = "asc",
+):
+    items = await crud.get_grape_varieties(
+        db,
+        name=name or None,
+        color=color or None,
+        origin_region=origin_region or None,
+        sort_by=sort_by,
+        sort_dir=sort_dir,
+        limit=500,
+    )
+    return templates.TemplateResponse(
+        request, "grape_varieties/_table.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir},
     )
 
 
@@ -43,6 +70,7 @@ async def edit_modal(item_id: int, request: Request, db: AsyncSession = Depends(
 async def create(
     request: Request,
     db: AsyncSession = Depends(get_db),
+    key: str = Form(...),
     name: str = Form(...),
     color: str = Form(""),
     origin_region: str = Form(""),
@@ -50,6 +78,7 @@ async def create(
 ):
     try:
         data = GrapeVarietyCreate(
+            key=key.strip(),
             name=name,
             color=color or None,
             origin_region=origin_region or None,
@@ -71,7 +100,7 @@ async def create(
     except IntegrityError:
         return templates.TemplateResponse(
             request, "partials/form_grape_variety.html",
-            {"item": None, "errors": {"__all__": "A grape variety with that name already exists."}},
+            {"item": None, "errors": {"__all__": "A grape variety with that key or name already exists."}},
             status_code=422,
         )
 
@@ -112,7 +141,7 @@ async def update(
     except IntegrityError:
         return templates.TemplateResponse(
             request, "partials/form_grape_variety.html",
-            {"item": item, "errors": {"__all__": "A grape variety with that name already exists."}},
+            {"item": item, "errors": {"__all__": "A grape variety with that key or name already exists."}},
             status_code=422,
         )
 

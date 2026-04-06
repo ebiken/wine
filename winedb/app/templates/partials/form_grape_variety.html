@@ -22,6 +22,15 @@
               {% endif %}
               hx-on::after-request="if(event.detail.successful) document.getElementById('modal-container').innerHTML=''">
           <div class="mb-3">
+            <label class="form-label fw-semibold">Key <span class="text-danger">*</span></label>
+            <input name="key"
+                   class="{% if item %}form-control-plaintext border rounded px-2 py-1 bg-light{% else %}form-control{% endif %}{% if errors.key is defined %} is-invalid{% endif %}"
+                   value="{{ item.key if item else '' }}"
+                   {% if item %}readonly{% else %}required placeholder="e.g. pinot_noir"{% endif %}>
+            {% if errors.key is defined %}<div class="invalid-feedback d-block">{{ errors.key }}</div>{% endif %}
+            {% if item %}<div class="form-text">Stable id; not editable here.</div>{% endif %}
+          </div>
+          <div class="mb-3">
             <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
             <input name="name" class="form-control {% if errors.name is defined %}is-invalid{% endif %}"
                    value="{{ item.name if item else '' }}" required>

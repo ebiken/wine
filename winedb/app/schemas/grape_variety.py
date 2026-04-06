@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 
 class GrapeVarietyBase(BaseModel):
+    key: str
     name: str
     name_synonyms: Optional[str] = None
     color: Optional[str] = None
@@ -15,6 +16,7 @@ class GrapeVarietyCreate(GrapeVarietyBase):
 
 
 class GrapeVarietyUpdate(BaseModel):
+    key: Optional[str] = None
     name: Optional[str] = None
     name_synonyms: Optional[str] = None
     color: Optional[str] = None

@@ -1,0 +1,12 @@
+{% for item in items %}
+<tr>
+  <td>{{ item.wine.winery.name }}</td>
+  <td>{{ item.wine.label_name }}</td>
+  <td>{{ item.wine.vintage_year }}</td>
+  <td>{{ item.grape_variety.name }}</td>
+  <td>{% if item.pct_blend is not none %}{{ item.pct_blend }}%{% else %}—{% endif %}</td>
+</tr>
+{% endfor %}
+{% if not items %}
+<tr><td colspan="5" class="text-muted fst-italic ps-2">No blend rows.</td></tr>
+{% endif %}

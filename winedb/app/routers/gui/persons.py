@@ -13,9 +13,36 @@ router = APIRouter(prefix="/ui/persons", tags=["UI - Persons"])
 
 @router.get("", response_class=HTMLResponse)
 async def list_page(request: Request, db: AsyncSession = Depends(get_db)):
-    items = await crud.get_persons(db, limit=500)
+    sort_by, sort_dir = "last_name", "asc"
+    items = await crud.get_persons(db, sort_by=sort_by, sort_dir=sort_dir, limit=500)
     return templates.TemplateResponse(
-        request, "persons/list.html", {"items": items}
+        request, "persons/list.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir},
+    )
+
+
+@router.get("/rows", response_class=HTMLResponse)
+async def list_rows(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    search: str = "",
+    birth_year: str = "",
+    nationality: str = "",
+    sort_by: str = "last_name",
+    sort_dir: str = "asc",
+):
+    items = await crud.get_persons(
+        db,
+        search=search or None,
+        birth_year=int(birth_year) if birth_year else None,
+        nationality=nationality or None,
+        sort_by=sort_by,
+        sort_dir=sort_dir,
+        limit=500,
+    )
+    return templates.TemplateResponse(
+        request, "persons/_table.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir},
     )
 
 

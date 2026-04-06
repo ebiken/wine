@@ -9,23 +9,36 @@
           hx-swap="innerHTML">+ New</button>
 </div>
 
-<table class="table table-hover table-sm align-middle">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Color</th>
-      <th>Origin Region</th>
-      <th>Synonyms</th>
-      <th style="width:130px"></th>
-    </tr>
-  </thead>
-  <tbody id="gv-tbody">
-    {% for item in items %}
-      {% include "partials/table_row_grape_variety.html" %}
-    {% endfor %}
-  </tbody>
-</table>
-{% if not items %}
-<p class="text-muted">No grape varieties found.</p>
-{% endif %}
+<form id="gv-filter-form"
+      hx-get="/ui/grape-varieties/rows"
+      hx-target="#gv-table-wrap"
+      hx-trigger="input delay:300ms"
+      class="row g-2 mb-3 align-items-end">
+  <input type="hidden" id="gv-sort-by"  name="sort_by"  value="{{ sort_by }}">
+  <input type="hidden" id="gv-sort-dir" name="sort_dir" value="{{ sort_dir }}">
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Name</label>
+    <input type="text" name="name" class="form-control form-control-sm" placeholder="Search…" style="min-width:140px">
+  </div>
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Color</label>
+    <select name="color" class="form-select form-select-sm">
+      <option value="">All</option>
+      <option value="red">Red</option>
+      <option value="white">White</option>
+    </select>
+  </div>
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Origin Region</label>
+    <input type="text" name="origin_region" class="form-control form-control-sm" placeholder="Search…" style="min-width:140px">
+  </div>
+  <div class="col-auto">
+    <button type="button" class="btn btn-outline-secondary btn-sm"
+            onclick="this.form.reset(); htmx.trigger(this.form, 'input');">Clear</button>
+  </div>
+</form>
+
+<div id="gv-table-wrap">
+  {% include "grape_varieties/_table.html" %}
+</div>
 {% endblock %}

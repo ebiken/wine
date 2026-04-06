@@ -1,0 +1,44 @@
+{% set JS = "var c=this.dataset.sortCol,sb=document.getElementById('wine-sort-by'),sd=document.getElementById('wine-sort-dir');sd.value=(sb.value===c&&sd.value==='asc')?'desc':'asc';sb.value=c;" %}
+{% set winery_count = items | map(attribute='winery_id') | select | list | unique | list | length %}
+{% set ava_count    = items | map(attribute='ava_id')    | select | list | unique | list | length %}
+{% set gv_count     = items | map(attribute='grape_variety_id') | select | list | unique | list | length %}
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wines/rows" hx-target="#wine-table-wrap" hx-include="#wine-filter-form"
+           data-sort-col="label_name" hx-on:htmx:before-request="{{ JS }}">
+          Label ({{ items | length }}){% if sort_by == 'label_name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wines/rows" hx-target="#wine-table-wrap" hx-include="#wine-filter-form"
+           data-sort-col="vintage_year" hx-on:htmx:before-request="{{ JS }}">
+          Vintage{% if sort_by == 'vintage_year' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>Winery{% if winery_count %} ({{ winery_count }}){% endif %}</th>
+      <th>AVA{% if ava_count %} ({{ ava_count }}){% endif %}</th>
+      <th>Grape Variety{% if gv_count %} ({{ gv_count }}){% endif %}</th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wines/rows" hx-target="#wine-table-wrap" hx-include="#wine-filter-form"
+           data-sort-col="alcohol_pct" hx-on:htmx:before-request="{{ JS }}">
+          Alcohol{% if sort_by == 'alcohol_pct' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>Vineyards</th>
+      <th style="width:130px"></th>
+    </tr>
+  </thead>
+  <tbody id="wine-tbody">
+    {% for item in items %}
+      {% include "partials/table_row_wine.html" %}
+    {% endfor %}
+    {% if not items %}
+    <tr><td colspan="8" class="text-muted fst-italic ps-2">No wines found.</td></tr>
+    {% endif %}
+  </tbody>
+</table>

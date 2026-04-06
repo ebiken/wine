@@ -5,17 +5,22 @@ Usage:
     uv run winedb import data/seed/
 
 Processes YAML files in this order: ava, grape_varieties, persons,
-vineyards, wineries, wines.
+vineyards, vineyard_owner, wineries, winery_staff, wines,
+wine_vineyard_sources, wine_grape_variety.
+
+Grape varieties in seed YAML are keyed by stable `key` (see grape_varieties.yaml).
+`wines.yaml` primary_variety and `wine_grape_variety.yaml` grape_variety hold those keys.
+`vineyards.yaml` grape_variety keys in `grape_varieties` are synced to `vineyard_grape_variety`.
 """
 
 import asyncio
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 from datetime import date
 
 import yaml
 import typer
-from sqlalchemy import select
+from sqlalchemy import ColumnElement, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import AsyncSessionLocal
@@ -28,7 +33,9 @@ from app.models import (
     Wine,
     WineryStaff,
     WineVineyardSource,
+    WineGrapeVariety,
     VineyardOwner,
+    VineyardGrapeVariety,
 )
 
 
@@ -36,6 +43,42 @@ def _parse_date(val: Optional[str]) -> Optional[date]:
     if not val:
         return None
     return date.fromisoformat(str(val))
+
+
+def _nullable_eq_col(col: Any, val: Optional[Any]) -> ColumnElement[bool]:
+    """Match a column to a value where YAML/database NULL must align on IS NULL."""
+    if val is None:
+        return col.is_(None)
+    return col == val
+
+
+async def _resolve_person(session: AsyncSession, prec: dict) -> Optional[Person]:
+    result = await session.execute(
+        select(Person).where(
+            Person.first_name == prec["first_name"],
+            Person.last_name == prec["last_name"],
+        )
+    )
+    return result.scalar_one_or_none()
+
+
+async def _resolve_wine(
+    session: AsyncSession, winery_name: str, label_name: str, vintage_year: int
+) -> Optional[Wine]:
+    winery_result = await session.execute(
+        select(Winery).where(Winery.name == winery_name)
+    )
+    winery = winery_result.scalar_one_or_none()
+    if winery is None:
+        return None
+    result = await session.execute(
+        select(Wine).where(
+            Wine.winery_id == winery.id,
+            Wine.label_name == label_name,
+            Wine.vintage_year == vintage_year,
+        )
+    )
+    return result.scalar_one_or_none()
 
 
 # ---------------------------------------------------------------------------
@@ -83,12 +126,17 @@ async def _upsert_avas(session: AsyncSession, records: list[dict]) -> None:
 
 async def _upsert_grape_varieties(session: AsyncSession, records: list[dict]) -> None:
     for rec in records:
+        gkey = rec.get("key")
+        if not gkey:
+            typer.echo(f"  WARNING: Grape variety missing 'key', skipping '{rec.get('name')}'")
+            continue
         result = await session.execute(
-            select(GrapeVariety).where(GrapeVariety.name == rec["name"])
+            select(GrapeVariety).where(GrapeVariety.key == gkey)
         )
         obj = result.scalar_one_or_none()
         if obj is None:
             obj = GrapeVariety()
+        obj.key = gkey
         obj.name = rec["name"]
         obj.name_synonyms = rec.get("name_synonyms")
         obj.color = rec.get("color")
@@ -143,6 +191,31 @@ async def _upsert_vineyards(session: AsyncSession, records: list[dict]) -> None:
         obj.established_year = rec.get("established_year")
         obj.description = rec.get("description")
         session.add(obj)
+        await session.flush()
+
+        await session.execute(
+            delete(VineyardGrapeVariety).where(
+                VineyardGrapeVariety.vineyard_id == obj.id
+            )
+        )
+        for sort_order, gkey in enumerate(rec.get("grape_varieties") or []):
+            gv_result = await session.execute(
+                select(GrapeVariety).where(GrapeVariety.key == gkey)
+            )
+            variety = gv_result.scalar_one_or_none()
+            if variety is None:
+                typer.echo(
+                    f"  WARNING: Grape variety key '{gkey}' not found, "
+                    f"skipping for vineyard '{rec['name']}'"
+                )
+                continue
+            session.add(
+                VineyardGrapeVariety(
+                    vineyard_id=obj.id,
+                    grape_variety_id=variety.id,
+                    sort_order=sort_order,
+                )
+            )
     await session.flush()
 
 
@@ -202,13 +275,16 @@ async def _upsert_wines(session: AsyncSession, records: list[dict]) -> None:
         variety_id = None
         if rec.get("primary_variety"):
             var_result = await session.execute(
-                select(GrapeVariety).where(GrapeVariety.name == rec["primary_variety"])
+                select(GrapeVariety).where(GrapeVariety.key == rec["primary_variety"])
             )
             variety = var_result.scalar_one_or_none()
             if variety:
                 variety_id = variety.id
             else:
-                typer.echo(f"  WARNING: Variety '{rec['primary_variety']}' not found for wine '{rec['label_name']}'")
+                typer.echo(
+                    f"  WARNING: Grape variety key '{rec['primary_variety']}' not found "
+                    f"for wine '{rec['label_name']}'"
+                )
 
         # Upsert wine
         result = await session.execute(
@@ -233,33 +309,166 @@ async def _upsert_wines(session: AsyncSession, records: list[dict]) -> None:
         wine.winery_description = rec.get("winery_description")
         wine.description = rec.get("description")
         session.add(wine)
-        await session.flush()
 
-        # Vineyard sources
-        for vsrc in rec.get("vineyard_sources", []):
-            vyd_result = await session.execute(
-                select(Vineyard).where(Vineyard.name == vsrc["vineyard"])
+    await session.flush()
+
+
+async def _upsert_vineyard_owners(session: AsyncSession, records: list[dict]) -> None:
+    for rec in records:
+        vyd_result = await session.execute(
+            select(Vineyard).where(Vineyard.name == rec["vineyard"])
+        )
+        vyd = vyd_result.scalar_one_or_none()
+        if vyd is None:
+            typer.echo(f"  WARNING: Vineyard '{rec['vineyard']}' not found, skipping owner row")
+            continue
+
+        person = await _resolve_person(session, rec["person"])
+        if person is None:
+            typer.echo(
+                f"  WARNING: Person '{rec['person'].get('first_name')} "
+                f"{rec['person'].get('last_name')}' not found, skipping owner row"
             )
-            vyd = vyd_result.scalar_one_or_none()
-            if vyd is None:
-                typer.echo(f"  WARNING: Vineyard '{vsrc['vineyard']}' not found for wine '{rec['label_name']}'")
-                continue
+            continue
 
-            src_result = await session.execute(
-                select(WineVineyardSource).where(
-                    WineVineyardSource.wine_id == wine.id,
-                    WineVineyardSource.vineyard_id == vyd.id,
-                )
+        own_role = rec.get("ownership_role")
+        year_start = rec.get("year_start")
+        q = select(VineyardOwner).where(
+            VineyardOwner.vineyard_id == vyd.id,
+            VineyardOwner.person_id == person.id,
+            _nullable_eq_col(VineyardOwner.ownership_role, own_role),
+            _nullable_eq_col(VineyardOwner.year_start, year_start),
+        )
+        result = await session.execute(q)
+        obj = result.scalar_one_or_none()
+        if obj is None:
+            obj = VineyardOwner()
+        obj.vineyard_id = vyd.id
+        obj.person_id = person.id
+        obj.ownership_role = own_role
+        obj.year_start = year_start
+        obj.year_end = rec.get("year_end")
+        session.add(obj)
+    await session.flush()
+
+
+async def _upsert_winery_staff(session: AsyncSession, records: list[dict]) -> None:
+    for rec in records:
+        winery_result = await session.execute(
+            select(Winery).where(Winery.name == rec["winery"])
+        )
+        winery = winery_result.scalar_one_or_none()
+        if winery is None:
+            typer.echo(f"  WARNING: Winery '{rec['winery']}' not found, skipping staff row")
+            continue
+
+        person = await _resolve_person(session, rec["person"])
+        if person is None:
+            typer.echo(
+                f"  WARNING: Person '{rec['person'].get('first_name')} "
+                f"{rec['person'].get('last_name')}' not found, skipping staff row"
             )
-            src = src_result.scalar_one_or_none()
-            if src is None:
-                src = WineVineyardSource()
-            src.wine_id = wine.id
-            src.vineyard_id = vyd.id
-            src.block_name = vsrc.get("block_name")
-            src.pct_blend = vsrc.get("pct_blend")
-            session.add(src)
+            continue
 
+        role = rec["role"]
+        year_start = rec.get("year_start")
+        q = select(WineryStaff).where(
+            WineryStaff.winery_id == winery.id,
+            WineryStaff.person_id == person.id,
+            WineryStaff.role == role,
+            _nullable_eq_col(WineryStaff.year_start, year_start),
+        )
+        result = await session.execute(q)
+        obj = result.scalar_one_or_none()
+        if obj is None:
+            obj = WineryStaff()
+        obj.winery_id = winery.id
+        obj.person_id = person.id
+        obj.role = role
+        obj.year_start = year_start
+        obj.year_end = rec.get("year_end")
+        obj.notes = rec.get("notes")
+        session.add(obj)
+    await session.flush()
+
+
+async def _upsert_wine_vineyard_sources(session: AsyncSession, records: list[dict]) -> None:
+    for rec in records:
+        wine = await _resolve_wine(
+            session, rec["winery"], rec["label_name"], rec["vintage_year"]
+        )
+        if wine is None:
+            typer.echo(
+                f"  WARNING: Wine '{rec['label_name']}' ({rec['winery']}, "
+                f"{rec['vintage_year']}) not found, skipping vineyard source"
+            )
+            continue
+
+        vyd_result = await session.execute(
+            select(Vineyard).where(Vineyard.name == rec["vineyard"])
+        )
+        vyd = vyd_result.scalar_one_or_none()
+        if vyd is None:
+            typer.echo(
+                f"  WARNING: Vineyard '{rec['vineyard']}' not found for wine "
+                f"'{rec['label_name']}'"
+            )
+            continue
+
+        block_name = rec.get("block_name")
+        q = select(WineVineyardSource).where(
+            WineVineyardSource.wine_id == wine.id,
+            WineVineyardSource.vineyard_id == vyd.id,
+            _nullable_eq_col(WineVineyardSource.block_name, block_name),
+        )
+        result = await session.execute(q)
+        src = result.scalar_one_or_none()
+        if src is None:
+            src = WineVineyardSource()
+        src.wine_id = wine.id
+        src.vineyard_id = vyd.id
+        src.block_name = block_name
+        src.pct_blend = rec.get("pct_blend")
+        session.add(src)
+    await session.flush()
+
+
+async def _upsert_wine_grape_varieties(session: AsyncSession, records: list[dict]) -> None:
+    for rec in records:
+        wine = await _resolve_wine(
+            session, rec["winery"], rec["label_name"], rec["vintage_year"]
+        )
+        if wine is None:
+            typer.echo(
+                f"  WARNING: Wine '{rec['label_name']}' ({rec['winery']}, "
+                f"{rec['vintage_year']}) not found, skipping grape variety row"
+            )
+            continue
+
+        var_result = await session.execute(
+            select(GrapeVariety).where(GrapeVariety.key == rec["grape_variety"])
+        )
+        variety = var_result.scalar_one_or_none()
+        if variety is None:
+            typer.echo(
+                f"  WARNING: Grape variety key '{rec['grape_variety']}' not found for wine "
+                f"'{rec['label_name']}'"
+            )
+            continue
+
+        result = await session.execute(
+            select(WineGrapeVariety).where(
+                WineGrapeVariety.wine_id == wine.id,
+                WineGrapeVariety.grape_variety_id == variety.id,
+            )
+        )
+        obj = result.scalar_one_or_none()
+        if obj is None:
+            obj = WineGrapeVariety()
+        obj.wine_id = wine.id
+        obj.grape_variety_id = variety.id
+        obj.pct_blend = rec.get("pct_blend")
+        session.add(obj)
     await session.flush()
 
 
@@ -272,8 +481,12 @@ IMPORT_ORDER = [
     ("grape_varieties.yaml", _upsert_grape_varieties),
     ("persons.yaml", _upsert_persons),
     ("vineyards.yaml", _upsert_vineyards),
+    ("vineyard_owner.yaml", _upsert_vineyard_owners),
     ("wineries.yaml", _upsert_wineries),
+    ("winery_staff.yaml", _upsert_winery_staff),
     ("wines.yaml", _upsert_wines),
+    ("wine_vineyard_sources.yaml", _upsert_wine_vineyard_sources),
+    ("wine_grape_variety.yaml", _upsert_wine_grape_varieties),
 ]
 
 
@@ -285,7 +498,7 @@ async def _run_import(seed_dir: Path) -> None:
                 if not filepath.exists():
                     typer.echo(f"  Skipping {filename} (not found)")
                     continue
-                records = yaml.safe_load(filepath.read_text())
+                records = yaml.safe_load(filepath.read_text()) or []
                 if not records:
                     typer.echo(f"  Skipping {filename} (empty)")
                     continue

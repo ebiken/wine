@@ -28,3 +28,8 @@ class Vineyard(Base):
     wine_sources: Mapped[List["WineVineyardSource"]] = relationship(  # noqa: F821
         "WineVineyardSource", back_populates="vineyard"
     )
+    vineyard_grape_varieties: Mapped[List["VineyardGrapeVariety"]] = relationship(  # noqa: F821
+        "VineyardGrapeVariety",
+        back_populates="vineyard",
+        order_by="VineyardGrapeVariety.sort_order",
+    )

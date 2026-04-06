@@ -32,10 +32,43 @@ async def _get_form_options(db: AsyncSession) -> dict:
 
 @router.get("", response_class=HTMLResponse)
 async def list_page(request: Request, db: AsyncSession = Depends(get_db)):
-    items = await crud.get_wines(db, limit=500)
+    sort_by = "vintage_year"
+    sort_dir = "desc"
+    items = await crud.get_wines(db, sort_by=sort_by, sort_dir=sort_dir, limit=500)
     opts = await _get_form_options(db)
     return templates.TemplateResponse(
-        request, "wines/list.html", {"items": items, **opts}
+        request, "wines/list.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir, **opts},
+    )
+
+
+@router.get("/rows", response_class=HTMLResponse)
+async def list_rows(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    label_name: str = "",
+    winery_id: str = "",
+    ava_id: str = "",
+    vintage_year: str = "",
+    grape_variety_id: str = "",
+    sort_by: str = "vintage_year",
+    sort_dir: str = "desc",
+):
+    items = await crud.get_wines(
+        db,
+        label_name=label_name or None,
+        winery_id=int(winery_id) if winery_id else None,
+        ava_id=int(ava_id) if ava_id else None,
+        vintage_year=int(vintage_year) if vintage_year else None,
+        grape_variety_id=int(grape_variety_id) if grape_variety_id else None,
+        sort_by=sort_by,
+        sort_dir=sort_dir,
+        limit=500,
+    )
+    opts = await _get_form_options(db)
+    return templates.TemplateResponse(
+        request, "wines/_table.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir, **opts},
     )
 
 

@@ -6,16 +6,29 @@ from app.models.grape_variety import GrapeVariety
 from app.schemas.grape_variety import GrapeVarietyCreate, GrapeVarietyUpdate
 
 
+_GV_SORTABLE = {"key", "name", "color", "origin_region"}
+
+
 async def get_grape_varieties(
     session: AsyncSession,
     color: Optional[str] = None,
+    name: Optional[str] = None,
+    origin_region: Optional[str] = None,
+    sort_by: str = "name",
+    sort_dir: str = "asc",
     skip: int = 0,
     limit: int = 100,
 ) -> Sequence[GrapeVariety]:
     q = select(GrapeVariety)
     if color:
         q = q.where(GrapeVariety.color == color)
-    q = q.offset(skip).limit(limit).order_by(GrapeVariety.name)
+    if name:
+        q = q.where(GrapeVariety.name.ilike(f"%{name}%"))
+    if origin_region:
+        q = q.where(GrapeVariety.origin_region.ilike(f"%{origin_region}%"))
+    col = getattr(GrapeVariety, sort_by if sort_by in _GV_SORTABLE else "name")
+    order = col.desc() if sort_dir == "desc" else col.asc()
+    q = q.offset(skip).limit(limit).order_by(order)
     result = await session.execute(q)
     return result.scalars().all()
 

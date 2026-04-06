@@ -1,31 +1,59 @@
 from typing import Optional, Sequence
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
+from app.models.associations import VineyardGrapeVariety
 from app.models.vineyard import Vineyard
 from app.schemas.vineyard import VineyardCreate, VineyardUpdate
+
+
+_VINEYARD_SORTABLE = {"name", "total_acres", "established_year"}
 
 
 async def get_vineyards(
     session: AsyncSession,
     ava_id: Optional[int] = None,
     name: Optional[str] = None,
+    established_year: Optional[int] = None,
+    soil_type: Optional[str] = None,
+    sort_by: str = "name",
+    sort_dir: str = "asc",
     skip: int = 0,
     limit: int = 100,
 ) -> Sequence[Vineyard]:
-    q = select(Vineyard)
+    q = (
+        select(Vineyard)
+        .options(
+            selectinload(Vineyard.vineyard_grape_varieties).selectinload(
+                VineyardGrapeVariety.grape_variety
+            )
+        )
+    )
     if ava_id is not None:
         q = q.where(Vineyard.ava_id == ava_id)
     if name:
         q = q.where(Vineyard.name.ilike(f"%{name}%"))
-    q = q.offset(skip).limit(limit).order_by(Vineyard.name)
+    if established_year is not None:
+        q = q.where(Vineyard.established_year == established_year)
+    if soil_type:
+        q = q.where(Vineyard.soil_type.ilike(f"%{soil_type}%"))
+    col = getattr(Vineyard, sort_by if sort_by in _VINEYARD_SORTABLE else "name")
+    order = col.desc() if sort_dir == "desc" else col.asc()
+    q = q.offset(skip).limit(limit).order_by(order)
     result = await session.execute(q)
     return result.scalars().all()
 
 
 async def get_vineyard(session: AsyncSession, vineyard_id: int) -> Optional[Vineyard]:
     result = await session.execute(
-        select(Vineyard).where(Vineyard.id == vineyard_id)
+        select(Vineyard)
+        .where(Vineyard.id == vineyard_id)
+        .options(
+            selectinload(Vineyard.vineyard_grape_varieties).selectinload(
+                VineyardGrapeVariety.grape_variety
+            )
+        )
     )
     return result.scalar_one_or_none()
 

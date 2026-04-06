@@ -10,6 +10,7 @@ from app.models.associations import (
     WineVineyardSource,
     WineGrapeVariety,
     VineyardOwner,
+    VineyardGrapeVariety,
 )
 
 __all__ = [
@@ -24,4 +25,5 @@ __all__ = [
     "WineVineyardSource",
     "WineGrapeVariety",
     "VineyardOwner",
+    "VineyardGrapeVariety",
 ]

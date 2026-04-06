@@ -7,6 +7,13 @@
   <td>{{ item.established_year or "—" }}</td>
   <td>{{ item.soil_type or "—" }}</td>
   <td>
+    {% if item.vineyard_grape_varieties %}
+      {{ item.vineyard_grape_varieties | map(attribute='grape_variety') | map(attribute='name') | join(', ') }}
+    {% else %}
+      —
+    {% endif %}
+  </td>
+  <td>
     <button class="btn btn-sm btn-outline-secondary"
             hx-get="/ui/vineyards/modal/{{ item.id }}"
             hx-target="#modal-container"

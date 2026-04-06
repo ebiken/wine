@@ -8,6 +8,9 @@ from app.models.associations import WineVineyardSource
 from app.schemas.wine import WineCreate, WineUpdate
 
 
+_SORTABLE = {"vintage_year", "label_name", "alcohol_pct", "production_cases"}
+
+
 async def get_wines(
     session: AsyncSession,
     winery_id: Optional[int] = None,
@@ -15,6 +18,8 @@ async def get_wines(
     vintage_year: Optional[int] = None,
     grape_variety_id: Optional[int] = None,
     label_name: Optional[str] = None,
+    sort_by: str = "vintage_year",
+    sort_dir: str = "desc",
     skip: int = 0,
     limit: int = 100,
 ) -> Sequence[Wine]:
@@ -29,7 +34,9 @@ async def get_wines(
         q = q.where(Wine.grape_variety_id == grape_variety_id)
     if label_name:
         q = q.where(Wine.label_name.ilike(f"%{label_name}%"))
-    q = q.offset(skip).limit(limit).order_by(Wine.vintage_year.desc(), Wine.label_name)
+    col = getattr(Wine, sort_by if sort_by in _SORTABLE else "vintage_year")
+    order = col.desc() if sort_dir == "desc" else col.asc()
+    q = q.offset(skip).limit(limit).order_by(order)
     result = await session.execute(q)
     return result.scalars().all()
 

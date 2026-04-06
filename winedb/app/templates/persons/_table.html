@@ -1,0 +1,39 @@
+{% set JS = "var c=this.dataset.sortCol,sb=document.getElementById('person-sort-by'),sd=document.getElementById('person-sort-dir');sd.value=(sb.value===c&&sd.value==='asc')?'desc':'asc';sb.value=c;" %}
+{% set nationality_count = items | map(attribute='nationality') | select | list | unique | list | length %}
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/persons/rows" hx-target="#person-table-wrap" hx-include="#person-filter-form"
+           data-sort-col="last_name" hx-on:htmx:before-request="{{ JS }}">
+          Name ({{ items | length }}){% if sort_by == 'last_name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/persons/rows" hx-target="#person-table-wrap" hx-include="#person-filter-form"
+           data-sort-col="birth_year" hx-on:htmx:before-request="{{ JS }}">
+          Birth Year{% if sort_by == 'birth_year' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/persons/rows" hx-target="#person-table-wrap" hx-include="#person-filter-form"
+           data-sort-col="nationality" hx-on:htmx:before-request="{{ JS }}">
+          Nationality{% if sort_by == 'nationality' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+          {% if nationality_count %} ({{ nationality_count }}){% endif %}
+        </a>
+      </th>
+      <th style="width:130px"></th>
+    </tr>
+  </thead>
+  <tbody id="person-tbody">
+    {% for item in items %}
+      {% include "partials/table_row_person.html" %}
+    {% endfor %}
+    {% if not items %}
+    <tr><td colspan="4" class="text-muted fst-italic ps-2">No persons found.</td></tr>
+    {% endif %}
+  </tbody>
+</table>

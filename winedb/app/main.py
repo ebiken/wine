@@ -9,9 +9,13 @@ from app.routers.gui import (
     ava as gui_ava,
     grape_varieties as gui_grape_varieties,
     persons as gui_persons,
+    vineyard_owners as gui_vineyard_owners,
     vineyards as gui_vineyards,
     wineries as gui_wineries,
+    wine_grape_varieties as gui_wine_grape_varieties,
+    wine_vineyard_sources as gui_wine_vineyard_sources,
     wines as gui_wines,
+    winery_staff as gui_winery_staff,
 )
 from app.templates import templates
 
@@ -42,6 +46,10 @@ app.include_router(gui_persons.router)
 app.include_router(gui_vineyards.router)
 app.include_router(gui_wineries.router)
 app.include_router(gui_wines.router)
+app.include_router(gui_winery_staff.router)
+app.include_router(gui_vineyard_owners.router)
+app.include_router(gui_wine_vineyard_sources.router)
+app.include_router(gui_wine_grape_varieties.router)
 
 
 @app.get("/ui", response_class=HTMLResponse, tags=["UI"])

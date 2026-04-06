@@ -1,0 +1,36 @@
+{% set JS = "var c=this.dataset.sortCol,sb=document.getElementById('winery-sort-by'),sd=document.getElementById('winery-sort-dir');sd.value=(sb.value===c&&sd.value==='asc')?'desc':'asc';sb.value=c;" %}
+{% set location_count  = items | map(attribute='location_state') | select | list | unique | list | length %}
+{% set ava_count       = items | map(attribute='ava_id') | select | list | unique | list | length %}
+{% set negociant_count = items | map(attribute='is_negociant') | list | unique | list | length %}
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wineries/rows" hx-target="#winery-table-wrap" hx-include="#winery-filter-form"
+           data-sort-col="name" hx-on:htmx:before-request="{{ JS }}">
+          Name ({{ items | length }}){% if sort_by == 'name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>Location{% if location_count %} ({{ location_count }}){% endif %}</th>
+      <th>AVA{% if ava_count %} ({{ ava_count }}){% endif %}</th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wineries/rows" hx-target="#winery-table-wrap" hx-include="#winery-filter-form"
+           data-sort-col="established_year" hx-on:htmx:before-request="{{ JS }}">
+          Est. Year{% if sort_by == 'established_year' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>Negociant{% if negociant_count %} ({{ negociant_count }}){% endif %}</th>
+      <th style="width:130px"></th>
+    </tr>
+  </thead>
+  <tbody id="winery-tbody">
+    {% for item in items %}
+      {% include "partials/table_row_winery.html" %}
+    {% endfor %}
+    {% if not items %}
+    <tr><td colspan="6" class="text-muted fst-italic ps-2">No wineries found.</td></tr>
+    {% endif %}
+  </tbody>
+</table>

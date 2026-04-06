@@ -83,3 +83,28 @@ class VineyardOwner(Base):
     person: Mapped["Person"] = relationship(  # noqa: F821
         "Person", back_populates="vineyard_ownerships"
     )
+
+
+class VineyardGrapeVariety(Base):
+    """Which grape varieties are grown at a vineyard (seed order preserved)."""
+
+    __tablename__ = "vineyard_grape_variety"
+    __table_args__ = (
+        UniqueConstraint("vineyard_id", "grape_variety_id"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    vineyard_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("vineyard.id"), nullable=False
+    )
+    grape_variety_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("grape_variety.id"), nullable=False
+    )
+    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    vineyard: Mapped["Vineyard"] = relationship(  # noqa: F821
+        "Vineyard", back_populates="vineyard_grape_varieties"
+    )
+    grape_variety: Mapped["GrapeVariety"] = relationship(  # noqa: F821
+        "GrapeVariety", back_populates="vineyard_grape_varieties"
+    )

@@ -1,0 +1,36 @@
+{% set JS = "var c=this.dataset.sortCol,sb=document.getElementById('ava-sort-by'),sd=document.getElementById('ava-sort-dir');sd.value=(sb.value===c&&sd.value==='asc')?'desc':'asc';sb.value=c;" %}
+{% set state_count      = items | map(attribute='state')      | select | list | unique | list | length %}
+{% set county_count     = items | map(attribute='county')     | select | list | unique | list | length %}
+{% set parent_ava_count = items | map(attribute='parent_ava_id') | select | list | unique | list | length %}
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/ava/rows" hx-target="#ava-table-wrap" hx-include="#ava-filter-form"
+           data-sort-col="name" hx-on:htmx:before-request="{{ JS }}">
+          Name ({{ items | length }}){% if sort_by == 'name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>State{% if state_count %} ({{ state_count }}){% endif %}</th>
+      <th>County{% if county_count %} ({{ county_count }}){% endif %}</th>
+      <th>Parent AVA{% if parent_ava_count %} ({{ parent_ava_count }}){% endif %}</th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/ava/rows" hx-target="#ava-table-wrap" hx-include="#ava-filter-form"
+           data-sort-col="total_acres" hx-on:htmx:before-request="{{ JS }}">
+          Total Acres{% if sort_by == 'total_acres' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th style="width:130px"></th>
+    </tr>
+  </thead>
+  <tbody id="ava-tbody">
+    {% for item in items %}
+      {% include "partials/table_row_ava.html" %}
+    {% endfor %}
+    {% if not items %}
+    <tr><td colspan="6" class="text-muted fst-italic ps-2">No AVAs found.</td></tr>
+    {% endif %}
+  </tbody>
+</table>

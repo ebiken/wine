@@ -34,6 +34,21 @@
         <li class="nav-item">
           <a class="nav-link {% if '/ui/wines' in request.url.path %}active{% endif %}" href="/ui/wines">Wines</a>
         </li>
+        <li class="nav-item mt-2 pt-2 border-top border-secondary">
+          <span class="small text-secondary px-2 d-block mb-1">Associations</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/ui/winery-staff' in request.url.path %}active{% endif %}" href="/ui/winery-staff">Winery staff</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/ui/vineyard-owners' in request.url.path %}active{% endif %}" href="/ui/vineyard-owners">Vineyard owners</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/ui/wine-vineyard-sources' in request.url.path %}active{% endif %}" href="/ui/wine-vineyard-sources">Wine sources</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/ui/wine-grape-varieties' in request.url.path %}active{% endif %}" href="/ui/wine-grape-varieties">Wine blends</a>
+        </li>
       </ul>
       <div class="mt-auto pt-3 border-top border-secondary">
         <a href="/docs" class="text-secondary text-decoration-none small" target="_blank">API Docs ↗</a>

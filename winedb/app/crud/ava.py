@@ -7,10 +7,17 @@ from app.models.ava import AVA
 from app.schemas.ava import AVACreate, AVAUpdate
 
 
+_AVA_SORTABLE = {"name", "state", "total_acres"}
+
+
 async def get_avas(
     session: AsyncSession,
     state: Optional[str] = None,
     parent_ava_id: Optional[int] = None,
+    name: Optional[str] = None,
+    county: Optional[str] = None,
+    sort_by: str = "name",
+    sort_dir: str = "asc",
     skip: int = 0,
     limit: int = 100,
 ) -> Sequence[AVA]:
@@ -19,7 +26,13 @@ async def get_avas(
         q = q.where(AVA.state == state)
     if parent_ava_id is not None:
         q = q.where(AVA.parent_ava_id == parent_ava_id)
-    q = q.offset(skip).limit(limit).order_by(AVA.name)
+    if name:
+        q = q.where(AVA.name.ilike(f"%{name}%"))
+    if county:
+        q = q.where(AVA.county.ilike(f"%{county}%"))
+    col = getattr(AVA, sort_by if sort_by in _AVA_SORTABLE else "name")
+    order = col.desc() if sort_dir == "desc" else col.asc()
+    q = q.offset(skip).limit(limit).order_by(order)
     result = await session.execute(q)
     return result.scalars().all()
 

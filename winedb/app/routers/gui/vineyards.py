@@ -14,11 +14,40 @@ router = APIRouter(prefix="/ui/vineyards", tags=["UI - Vineyards"])
 
 @router.get("", response_class=HTMLResponse)
 async def list_page(request: Request, db: AsyncSession = Depends(get_db)):
-    items = await crud.get_vineyards(db, limit=500)
+    sort_by, sort_dir = "name", "asc"
+    items = await crud.get_vineyards(db, sort_by=sort_by, sort_dir=sort_dir, limit=500)
     all_avas = await ava_crud.get_avas(db, limit=500)
     return templates.TemplateResponse(
         request, "vineyards/list.html",
-        {"items": items, "all_avas": all_avas},
+        {"items": items, "all_avas": all_avas, "sort_by": sort_by, "sort_dir": sort_dir},
+    )
+
+
+@router.get("/rows", response_class=HTMLResponse)
+async def list_rows(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    name: str = "",
+    ava_id: str = "",
+    established_year: str = "",
+    soil_type: str = "",
+    sort_by: str = "name",
+    sort_dir: str = "asc",
+):
+    items = await crud.get_vineyards(
+        db,
+        name=name or None,
+        ava_id=int(ava_id) if ava_id else None,
+        established_year=int(established_year) if established_year else None,
+        soil_type=soil_type or None,
+        sort_by=sort_by,
+        sort_dir=sort_dir,
+        limit=500,
+    )
+    all_avas = await ava_crud.get_avas(db, limit=500)
+    return templates.TemplateResponse(
+        request, "vineyards/_table.html",
+        {"items": items, "all_avas": all_avas, "sort_by": sort_by, "sort_dir": sort_dir},
     )
 
 

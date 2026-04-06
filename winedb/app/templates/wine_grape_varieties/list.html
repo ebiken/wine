@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Wine grape varieties{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Wine grape varieties (blends)</h2>
+</div>
+
+<form id="wgv-filter-form"
+      hx-get="/ui/wine-grape-varieties/rows"
+      hx-target="#wgv-tbody"
+      hx-trigger="input delay:300ms"
+      class="row g-2 mb-3 align-items-end">
+  <input type="hidden" id="wgv-sort-by"  name="sort_by"  value="{{ sort_by }}">
+  <input type="hidden" id="wgv-sort-dir" name="sort_dir" value="{{ sort_dir }}">
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Winery</label>
+    <input type="text" name="winery_search" class="form-control form-control-sm" placeholder="Search…" style="min-width:140px">
+  </div>
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Wine label</label>
+    <input type="text" name="label_search" class="form-control form-control-sm" placeholder="Search…" style="min-width:140px">
+  </div>
+  <div class="col-auto">
+    <label class="form-label form-label-sm mb-1">Grape</label>
+    <input type="text" name="grape_search" class="form-control form-control-sm" placeholder="Search…" style="min-width:120px">
+  </div>
+  <div class="col-auto">
+    <button type="button" class="btn btn-outline-secondary btn-sm"
+            onclick="this.form.reset(); htmx.trigger(this.form, 'input');">Clear</button>
+  </div>
+</form>
+
+{% set JS = "var c=this.dataset.sortCol,sb=document.getElementById('wgv-sort-by'),sd=document.getElementById('wgv-sort-dir');sd.value=(sb.value===c&&sd.value==='asc')?'desc':'asc';sb.value=c;" %}
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wine-grape-varieties/rows" hx-target="#wgv-tbody" hx-include="#wgv-filter-form"
+           data-sort-col="winery_name" hx-on:htmx:before-request="{{ JS }}">
+          Winery{% if sort_by == 'winery_name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wine-grape-varieties/rows" hx-target="#wgv-tbody" hx-include="#wgv-filter-form"
+           data-sort-col="label_name" hx-on:htmx:before-request="{{ JS }}">
+          Label{% if sort_by == 'label_name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wine-grape-varieties/rows" hx-target="#wgv-tbody" hx-include="#wgv-filter-form"
+           data-sort-col="vintage_year" hx-on:htmx:before-request="{{ JS }}">
+          Vintage{% if sort_by == 'vintage_year' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wine-grape-varieties/rows" hx-target="#wgv-tbody" hx-include="#wgv-filter-form"
+           data-sort-col="grape_name" hx-on:htmx:before-request="{{ JS }}">
+          Grape variety{% if sort_by == 'grape_name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/wine-grape-varieties/rows" hx-target="#wgv-tbody" hx-include="#wgv-filter-form"
+           data-sort-col="pct_blend" hx-on:htmx:before-request="{{ JS }}">
+          % blend{% if sort_by == 'pct_blend' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+    </tr>
+  </thead>
+  <tbody id="wgv-tbody">
+    {% include "wine_grape_varieties/_rows.html" %}
+  </tbody>
+</table>
+{% endblock %}

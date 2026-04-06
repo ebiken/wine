@@ -6,9 +6,16 @@ from app.models.person import Person
 from app.schemas.person import PersonCreate, PersonUpdate
 
 
+_PERSON_SORTABLE = {"last_name", "birth_year", "nationality"}
+
+
 async def get_persons(
     session: AsyncSession,
     search: Optional[str] = None,
+    birth_year: Optional[int] = None,
+    nationality: Optional[str] = None,
+    sort_by: str = "last_name",
+    sort_dir: str = "asc",
     skip: int = 0,
     limit: int = 100,
 ) -> Sequence[Person]:
@@ -21,7 +28,13 @@ async def get_persons(
                 Person.last_name.ilike(pattern),
             )
         )
-    q = q.offset(skip).limit(limit).order_by(Person.last_name, Person.first_name)
+    if birth_year is not None:
+        q = q.where(Person.birth_year == birth_year)
+    if nationality:
+        q = q.where(Person.nationality.ilike(f"%{nationality}%"))
+    col = getattr(Person, sort_by if sort_by in _PERSON_SORTABLE else "last_name")
+    order = col.desc() if sort_dir == "desc" else col.asc()
+    q = q.offset(skip).limit(limit).order_by(order)
     result = await session.execute(q)
     return result.scalars().all()
 

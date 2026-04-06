@@ -1,0 +1,49 @@
+{% set JS = "var c=this.dataset.sortCol,sb=document.getElementById('gv-sort-by'),sd=document.getElementById('gv-sort-dir');sd.value=(sb.value===c&&sd.value==='asc')?'desc':'asc';sb.value=c;" %}
+{% set color_count = items | map(attribute='color') | select | list | unique | list | length %}
+{% set origin_count = items | map(attribute='origin_region') | select | list | unique | list | length %}
+<table class="table table-hover table-sm align-middle">
+  <thead>
+    <tr>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/grape-varieties/rows" hx-target="#gv-table-wrap" hx-include="#gv-filter-form"
+           data-sort-col="key" hx-on:htmx:before-request="{{ JS }}">
+          Key{% if sort_by == 'key' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/grape-varieties/rows" hx-target="#gv-table-wrap" hx-include="#gv-filter-form"
+           data-sort-col="name" hx-on:htmx:before-request="{{ JS }}">
+          Name ({{ items | length }}){% if sort_by == 'name' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/grape-varieties/rows" hx-target="#gv-table-wrap" hx-include="#gv-filter-form"
+           data-sort-col="color" hx-on:htmx:before-request="{{ JS }}">
+          Color{% if sort_by == 'color' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+          {% if color_count %} ({{ color_count }}){% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="#" class="text-decoration-none text-reset"
+           hx-get="/ui/grape-varieties/rows" hx-target="#gv-table-wrap" hx-include="#gv-filter-form"
+           data-sort-col="origin_region" hx-on:htmx:before-request="{{ JS }}">
+          Origin Region{% if sort_by == 'origin_region' %} {{ '^' if sort_dir == 'asc' else 'v' }}{% endif %}
+          {% if origin_count %} ({{ origin_count }}){% endif %}
+        </a>
+      </th>
+      <th>Synonyms</th>
+      <th style="width:130px"></th>
+    </tr>
+  </thead>
+  <tbody id="gv-tbody">
+    {% for item in items %}
+      {% include "partials/table_row_grape_variety.html" %}
+    {% endfor %}
+    {% if not items %}
+    <tr><td colspan="6" class="text-muted fst-italic ps-2">No grape varieties found.</td></tr>
+    {% endif %}
+  </tbody>
+</table>

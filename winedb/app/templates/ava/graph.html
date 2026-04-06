@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}AVAs - Tree View{% endblock %}
+{% block content %}
+
+{# Recursive macro to render an AVA node #}
+{% macro render_node(ava) %}
+  {% set node_children = children_by_parent.get(ava.id, []) %}
+  {% if node_children %}
+  <li>
+    <button class="btn btn-link btn-sm p-0 text-start ava-toggle"
+            data-bs-toggle="collapse"
+            data-bs-target="#ava-{{ ava.id }}"
+            aria-expanded="false">
+      <span class="toggle-icon">▶</span>
+      {{ ava.name }}{% if ava.short_name %} <span class="text-muted small">({{ ava.short_name }})</span>{% endif %}
+    </button>
+    <div class="collapse" id="ava-{{ ava.id }}">
+      <ul class="list-unstyled ms-3 mt-1">
+        {% for child in node_children %}
+          {{ render_node(child) }}
+        {% endfor %}
+      </ul>
+    </div>
+  </li>
+  {% else %}
+  <li class="py-1">
+    <span class="text-secondary small ms-1">○</span>
+    {{ ava.name }}{% if ava.short_name %} <span class="text-muted small">({{ ava.short_name }})</span>{% endif %}
+  </li>
+  {% endif %}
+{% endmacro %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">American Viticultural Areas</h2>
+  <div class="d-flex align-items-center gap-2">
+    <div class="btn-group btn-group-sm" role="group">
+      <a href="/ui/ava" class="btn btn-outline-secondary">List</a>
+      <a href="/ui/ava/graph" class="btn btn-outline-secondary active">Tree</a>
+    </div>
+    <button id="btn-expand-all" class="btn btn-outline-secondary btn-sm">Expand All</button>
+    <button id="btn-collapse-all" class="btn btn-outline-secondary btn-sm">Collapse All</button>
+  </div>
+</div>
+
+{% if not sorted_states %}
+  <p class="text-muted">No AVAs found.</p>
+{% else %}
+  <div id="ava-tree">
+    {% for state in sorted_states %}
+    <div class="mb-2">
+      <button class="btn btn-sm btn-secondary w-100 text-start state-toggle"
+              data-bs-toggle="collapse"
+              data-bs-target="#state-{{ state }}"
+              aria-expanded="true">
+        <span class="toggle-icon">▼</span>
+        <strong>{{ state }}</strong>
+        <span class="text-white-50 ms-2 small">({{ roots_by_state[state] | length }} root AVA{% if roots_by_state[state] | length != 1 %}s{% endif %})</span>
+      </button>
+      <div class="collapse show" id="state-{{ state }}">
+        <ul class="list-unstyled ms-3 mt-2 mb-1">
+          {% for ava in roots_by_state[state] %}
+            {{ render_node(ava) }}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<style>
+  .ava-toggle .toggle-icon,
+  .state-toggle .toggle-icon {
+    display: inline-block;
+    transition: transform 0.15s ease;
+    font-size: 0.65em;
+    margin-right: 4px;
+  }
+  .ava-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(90deg);
+  }
+  .state-toggle[aria-expanded="false"] .toggle-icon {
+    transform: rotate(-90deg);
+  }
+  #ava-tree ul li {
+    padding: 2px 0;
+  }
+</style>
+
+<script>
+  document.getElementById('btn-expand-all').addEventListener('click', function () {
+    document.querySelectorAll('#ava-tree .collapse').forEach(function (el) {
+      bootstrap.Collapse.getOrCreateInstance(el).show();
+    });
+  });
+  document.getElementById('btn-collapse-all').addEventListener('click', function () {
+    document.querySelectorAll('#ava-tree .collapse').forEach(function (el) {
+      bootstrap.Collapse.getOrCreateInstance(el).hide();
+    });
+  });
+</script>
+{% endblock %}

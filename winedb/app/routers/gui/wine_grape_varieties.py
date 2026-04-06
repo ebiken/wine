@@ -1,0 +1,51 @@
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import HTMLResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.database import get_db
+from app.templates import templates
+import app.crud.wine_grape_variety as crud
+
+router = APIRouter(
+    prefix="/ui/wine-grape-varieties",
+    tags=["UI - Wine grape varieties"],
+)
+
+
+@router.get("", response_class=HTMLResponse)
+async def list_page(request: Request, db: AsyncSession = Depends(get_db)):
+    sort_by, sort_dir = "winery_name", "asc"
+    items = await crud.get_wine_grape_varieties(
+        db, sort_by=sort_by, sort_dir=sort_dir, limit=500
+    )
+    return templates.TemplateResponse(
+        request,
+        "wine_grape_varieties/list.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir},
+    )
+
+
+@router.get("/rows", response_class=HTMLResponse)
+async def list_rows(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    label_search: str = "",
+    winery_search: str = "",
+    grape_search: str = "",
+    sort_by: str = "winery_name",
+    sort_dir: str = "asc",
+):
+    items = await crud.get_wine_grape_varieties(
+        db,
+        label_search=label_search or None,
+        winery_search=winery_search or None,
+        grape_search=grape_search or None,
+        sort_by=sort_by,
+        sort_dir=sort_dir,
+        limit=500,
+    )
+    return templates.TemplateResponse(
+        request,
+        "wine_grape_varieties/_rows.html",
+        {"items": items, "sort_by": sort_by, "sort_dir": sort_dir},
+    )
